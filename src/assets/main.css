@@ -1,0 +1,36 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    /* font-family: '楷体'; */
+}
+
+body{
+    background-color: #e5e5e5;
+    overflow: hidden;
+}
+
+i{
+    font-style:normal;
+    font-size:15px;
+    padding: 0 2px;
+}
+
+ul{
+    list-style:none;    
+}
+li{
+    list-style-type:none;   
+}
+
+/*设置点击前的样式 */
+a{
+    text-decoration: none;
+    color: #000;
+      }
+  /*设置点击后的样式 */
+  .router-link-active {
+      text-decoration: none;
+      color: red;
+}
+  
