@@ -57,7 +57,7 @@
   </el-table-column>
     <el-table-column label="合计">
     <template #default="{row}">
-        <span class="cost"><i>¥</i>{{ row.price*row.count }}</span>
+        <span class="cost"><i>¥</i>{{ (row.price*row.count).toFixed(2) }}</span>
     </template>
   </el-table-column>
   <el-table-column width="117px">
@@ -135,8 +135,6 @@ const conponLength = ref(0)
 const openDrawer = ()=>{
 drawer.value.openDrawer()
 }
-
-
 
 onMounted(()=>{
   CartStore.Cartdata.forEach((item) => {
@@ -251,7 +249,7 @@ const coupons = computed(()=>{
     const curId = CouponsStore.curConpons.id
     const res = conponsLise.value.find((item)=>item.id === curId).coupon
     CouponsStore.ConponsPay = res
-    return res
+    return res.toFixed(2)
   }
   return 0
 })
@@ -538,7 +536,7 @@ pointer-events:none;
 @keyframes showjianshao{
   0%{opacity: 0;};
   60%{opacity: 0.5;};
-  100%{opacity: 1;left: 0 ;transform: rotate(540deg);}
+  100%{opacity: 1;left: 0 ;transform: rotate(-540deg);}
 }
 
 @keyframes returnjianshao{
@@ -550,7 +548,7 @@ pointer-events:none;
 @keyframes showjia{
   0%{opacity: 0;};
   60%{opacity: 0.5;};
-  100%{opacity: 1;right: 0;transform:rotate(360deg);}
+  100%{opacity: 1;right: 0;transform:rotate(540deg);}
 }
 
 @keyframes returnjia{

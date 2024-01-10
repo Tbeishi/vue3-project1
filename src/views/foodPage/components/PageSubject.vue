@@ -8,11 +8,11 @@
         >
         <template #button v-if="!food.kinds">
             <i class="iconfont icon-jianshao" 
-            :class="{'appear':food.Ischecked,'disappear':food.Ischecked === false}"
+            :class="{'appear':food.Ischecked,'disappear':food.Ischecked === false,'active':food.Isactive === true}"
             @click="reduceFood(food)"
             ></i>
             <span class="buyCount"
-            :class="{'appear':food.Ischecked,'disappear':food.Ischecked === false}"
+            :class="{'appear':food.Ischecked,'disappear':food.Ischecked === false,'active':food.Isactive === true}"
             >{{ food.count }}</span>
             <i class="iconfont icon-jia" @click="addFood($event,food)"></i>
         </template>
@@ -55,6 +55,7 @@ const route = useRoute()
 const loading = ref(false)
 const emptyValue = ref(false)
 const title = ref('')
+const curFood = ref()
 const emnu = ref({
     '24小时热销榜':message => allData.value.sort(sortRules(message)),
     '周销榜': message => allData.value.sort(sortRules(message)),
@@ -73,6 +74,11 @@ const arr = []
 getData().forEach((item)=>{
     item.category.forEach((category)=>{
         category.foodName = item.foodName
+        const cartItem = CartStore.cartNameList.indexOf(category.categoryId)
+        if(cartItem != -1) {
+            category.count = CartStore.Cartdata[cartItem].count
+            category.Isactive = true
+        };
         arr.push(category)
     })
 })
@@ -126,21 +132,47 @@ const afterEnter = (el)=>{
     elLeft.value = event.clientX;
     elTop.value = event.clientY;
     showBall.value.push('true')
+    curFood.value = item
   }
 
   const reduceFood = (item)=>{
+    const id = CartStore.cartNameList.indexOf(item.categoryId)
     if(item.count === 1) {
         item.Ischecked = false
         setTimeout(()=>{
             item.count --
+            CartStore.cartNameList.splice(id, 1)
+            CartStore.Cartdata.splice(id, 1)
         },200)
     }
-    if(item.count > 1) item.count --
+    if(item.count > 1){
+        item.count --
+        CartStore.Cartdata[id].count = item.count
+        console.log(CartStore.CartMessage.playCount);
+    }
+    CartStore.CartMessage.playCount = true
+        setTimeout(()=>{
+            CartStore.CartMessage.playCount = false
+        },500)
   }
+
+  // 购物车添加商品数据的方法
+const addCartData = ()=>{
+    const id = curFood.value.categoryId
+    if(!CartStore.cartNameList.includes(id)){
+        CartStore.cartNameList.push(id)
+        curFood.value.name = curFood.value.foodName
+        CartStore.Cartdata.push(curFood.value)
+    }
+    else{
+        const index = CartStore.cartNameList.indexOf(id)
+        CartStore.Cartdata[index].count = curFood.value.count
+    }
+}
 
   const handleAnimationEnd = ()=>{
     CartStore.CartMessage.playStart = true
-    // addCartData() //动画结束后才将商品数据添加到购物车
+    addCartData() //动画结束后才将商品数据添加到购物车
     setTimeout(()=>{
         CartStore.CartMessage.playStart = false
      },500)
@@ -212,8 +244,12 @@ const afterEnter = (el)=>{
     position: absolute;
     right: 4.5px;
     opacity: 0;
+    &.active{
+    transform: translateX(-32px);
+    opacity: 1;
+    }
     &.appear{
-    animation: appearCount 0.6s ease forwards;
+    animation: appearCount 0.5s ease forwards;
     }
     &.disappear{
     animation: disappearCount 0.2s ease forwards;
@@ -228,13 +264,18 @@ const afterEnter = (el)=>{
     z-index: 2;
 }
 
+
 .iconfont.icon-jianshao{
   transition: all .3s;
   opacity: 0;
   position: absolute;
   right: 0;
+  &.active{
+    transform: translateX(-70px);
+    opacity: 1;
+  }
   &.appear{
-    animation: appearjianhao 0.6s ease forwards;
+    animation: appearjianhao 0.5s ease forwards;
   }
   &.disappear{
     animation: disappearjianhao 0.4s ease forwards;
@@ -244,11 +285,11 @@ const afterEnter = (el)=>{
 @keyframes appearjianhao{
   0%{transform: translateX(0) rotate(540deg);opacity: 0};
   70%{opacity: 0.6;}
-  100%{transform: translateX(-57.38px);opacity: 1;}
+  100%{transform: translateX(-70px);opacity: 1;}
 }
 
 @keyframes disappearjianhao{
-  0%{transform: translateX(-57.38px) rotate(-360deg);opacity: 1};
+  0%{transform: translateX(-70px) rotate(-360deg);opacity: 1};
   50%{opacity: 0.2;}
   100%{transform: translateX(0);opacity: 0;}
 }
@@ -256,11 +297,11 @@ const afterEnter = (el)=>{
 @keyframes appearCount{
   0%{transform: translateX(0) rotate(540deg);opacity: 0};
   70%{opacity: 0.6;}
-  100%{transform: translateX(-28.69px) ;opacity: 1;}
+  100%{transform: translateX(-32px) ;opacity: 1;}
 }
 
 @keyframes disappearCount{
-  0%{transform: translateX(-28.69px) rotate(-360deg);opacity: 1};
+  0%{transform: translateX(-32px) rotate(-360deg);opacity: 1};
   50%{opacity: 0.2;}
   100%{transform: translateX(0);opacity: 0;}
 }

@@ -1,7 +1,7 @@
 <template>
       <el-card @click="toDetail(food)" >
             <div class="card-pic">
-            <img :src="food.img" alt="" style="width:55%;height: 140px">
+            <img :src="food.image" alt="" style="width:55%;height: 140px">
             </div>
             <div class="card-container">
             <div class="sellName">{{ food.categoryName }}</div>
@@ -9,7 +9,7 @@
             <div class="sellPrice">
                 <div class="PriceMessage">
                 <span class="price">
-                    <i>¥</i>{{ food.nowPrice }}<span class="priceText" v-if="food.kinds">起</span>
+                    <i>¥</i>{{ food.price }}<span class="priceText" v-if="food.kinds">起</span>
                 </span>
                 <span class="oldPrice" v-show="food.oldPrice">
                     <i>¥</i>{{ food.oldPrice }}<span v-if="food.kinds">起</span>

@@ -7,8 +7,8 @@ export default function  getData(){
             {
               categoryId: 11,
               categoryName:"可爱多",
-              img:"/src/assets/picture/可爱多.jpg",
-              nowPrice:5,
+              image:"/src/assets/picture/可爱多.jpg",
+              price:5,
               oldPrice:6,
               sellCount:90,
               daySellCount:6,
@@ -62,12 +62,12 @@ export default function  getData(){
            {
             categoryId: 12,
             categoryName:"哈根达斯",
-            nowPrice:10,
+            price:10,
             sellCount:63,
             daySellCount:2,
             weekSellCount:7,
             monthSellCount:20,
-            img:"/src/assets/冰淇淋/哈根达斯/曲奇香奶口味.jpg",
+            image:"/src/assets/冰淇淋/哈根达斯/曲奇香奶口味.jpg",
             kinds:[
               {
                 kindsId: 121,
@@ -88,13 +88,13 @@ export default function  getData(){
            {
             categoryId: 13,
             categoryName:"巧乐兹",
-            nowPrice:4,
+            price:4,
             oldPrice:6,
             sellCount:125,
             daySellCount:10,
             weekSellCount:36,
             monthSellCount:52,
-            img:"/src/assets/冰淇淋/巧乐兹/蛋奶双层巧克力味.jpg",
+            image:"/src/assets/冰淇淋/巧乐兹/蛋奶双层巧克力味.jpg",
             kinds:[
               {
                 kindsId: 131,
@@ -129,12 +129,12 @@ export default function  getData(){
            {
             categoryId: 14,
             categoryName:"甄稀",
-            nowPrice:6,
+            price:6,
             sellCount:96,
             daySellCount:4,
             weekSellCount:10,
             monthSellCount:24,
-            img:"/src/assets/冰淇淋/甄稀/轻恬香草口味.jpg",
+            image:"/src/assets/冰淇淋/甄稀/轻恬香草口味.jpg",
             kinds:[
               {
                 kindsId: 141,
@@ -173,8 +173,8 @@ export default function  getData(){
             daySellCount:8,
             weekSellCount:15,
             monthSellCount:34,
-            img:"/src/assets/冰淇淋/钟薛高/丝绒可可口味.jpg",
-            nowPrice:20,
+            image:"/src/assets/冰淇淋/钟薛高/丝绒可可口味.jpg",
+            price:20,
             oldPrice:25,
             kinds:[
               {
@@ -207,8 +207,8 @@ export default function  getData(){
             daySellCount:12,
             weekSellCount:35,
             monthSellCount:62,
-            img:"/src/assets/可爱多/草莓味.jpg",
-            nowPrice:4,
+            image:"/src/assets/可爱多/草莓味.jpg",
+            price:4,
             oldPrice:5,
             kinds:[
               {
@@ -265,8 +265,8 @@ export default function  getData(){
           {
             categoryId: 21,
             categoryName:"九制梅",
-            img:"/src/assets/picture/溜溜梅.jpg",
-            nowPrice:5,
+            image:"/src/assets/picture/溜溜梅.jpg",
+            price:5,
             oldPrice:6,
             sellCount:90,
             daySellCount:7,
@@ -277,8 +277,8 @@ export default function  getData(){
           {
             categoryId: 22,
             categoryName:"清梅",
-            img:'/src/assets/溜溜梅/清梅.jpg',
-            nowPrice:5,
+            image:'/src/assets/溜溜梅/清梅.jpg',
+            price:5,
             sellCount: 20,
             daySellCount:2,
             weekSellCount:4,
@@ -288,8 +288,8 @@ export default function  getData(){
           {
             categoryId: 23,
             categoryName:"乌梅",
-            img:'/src/assets/溜溜梅/乌梅.jpg',
-            nowPrice:5,
+            image:'/src/assets/溜溜梅/乌梅.jpg',
+            price:5,
             sellCount: 22,
             daySellCount:3,
             weekSellCount:6,
@@ -299,8 +299,8 @@ export default function  getData(){
           {
             categoryId: 24,
             categoryName:"雪梅",
-            img:'/src/assets/溜溜梅/雪梅.jpg',
-            nowPrice:5,
+            image:'/src/assets/溜溜梅/雪梅.jpg',
+            price:5,
             sellCount: 70,
             daySellCount:4,
             weekSellCount:7,
@@ -310,8 +310,8 @@ export default function  getData(){
           {
             categoryId: 25,
             categoryName:"咖啡梅",
-            img:'/src/assets/溜溜梅/咖啡梅.jpg',
-            nowPrice:5,
+            image:'/src/assets/溜溜梅/咖啡梅.jpg',
+            price:5,
             oldPrice:6,
             sellCount: 50,
             daySellCount:2,
@@ -322,8 +322,8 @@ export default function  getData(){
           {
             categoryId: 26,
             categoryName:"话梅",
-            img:'/src/assets/溜溜梅/话梅.jpg',
-            nowPrice:5,
+            image:'/src/assets/溜溜梅/话梅.jpg',
+            price:5,
             oldPrice:6,
             sellCount: 50,
             daySellCount:3,
@@ -334,8 +334,8 @@ export default function  getData(){
           {
             categoryId: 27,
             categoryName:"情人梅",
-            img:'/src/assets/溜溜梅/情人梅.jpg',
-            nowPrice:5,
+            image:'/src/assets/溜溜梅/情人梅.jpg',
+            price:5,
             oldPrice:6,
             sellCount: 20,
             daySellCount:2,
@@ -346,8 +346,8 @@ export default function  getData(){
           {
             categoryId: 28,
             categoryName:"凤梨梅",
-            img:'/src/assets/溜溜梅/凤梨梅.jpg',
-            nowPrice:5,
+            image:'/src/assets/溜溜梅/凤梨梅.jpg',
+            price:5,
             oldPrice:6,
             sellCount: 60,
             daySellCount:8,
@@ -358,8 +358,8 @@ export default function  getData(){
           {
             categoryId: 29,
             categoryName:"绿茶梅",
-            img:'/src/assets/溜溜梅/绿茶梅.jpg',
-            nowPrice:5,
+            image:'/src/assets/溜溜梅/绿茶梅.jpg',
+            price:5,
             oldPrice:6,
             sellCount: 10,
             daySellCount:1,
@@ -376,8 +376,8 @@ export default function  getData(){
           {
             categoryId: 31,
             categoryName:"奥利奥",
-            img:'/src/assets/奥利奥/草莓味夹心.jpg',
-            nowPrice:4,
+            image:'/src/assets/奥利奥/草莓味夹心.jpg',
+            price:4,
             oldPrice:5,
             sellCount: 520,
             daySellCount:25,
@@ -431,8 +431,8 @@ export default function  getData(){
         {
           categoryId: 41,
           categoryName:"单包麻辣王子",
-          img:"/src/assets/picture/麻辣王子.jpg",
-          nowPrice:0.8,
+          image:"/src/assets/picture/麻辣王子.jpg",
+          price:0.8,
           oldPrice:1,
           sellCount:490,
           daySellCount:52,
@@ -443,8 +443,8 @@ export default function  getData(){
         {
           categoryId: 42,
           categoryName:"单袋麻辣王子",
-          img:'/src/assets/麻辣王子/单袋麻辣王子.png',
-          nowPrice:5,
+          image:'/src/assets/麻辣王子/单袋麻辣王子.png',
+          price:5,
           oldPrice:7,
           sellCount: 300,
           daySellCount:34,
@@ -455,8 +455,8 @@ export default function  getData(){
         {
           categoryId: 43,
           categoryName:"麻辣王子大礼包",
-          img:'/src/assets/麻辣王子/麻辣王子大礼包.jpg',
-          nowPrice:10,
+          image:'/src/assets/麻辣王子/麻辣王子大礼包.jpg',
+          price:10,
           oldPrice:12,
           sellCount: 300,
           daySellCount:26,
@@ -467,8 +467,8 @@ export default function  getData(){
         {
           categoryId: 44,
           categoryName:"单箱麻辣王子",
-          img:'/src/assets/麻辣王子/单箱麻辣王子.jpg',
-          nowPrice:20,
+          image:'/src/assets/麻辣王子/单箱麻辣王子.jpg',
+          price:20,
           oldPrice:25,
           sellCount: 400,
           daySellCount:39,

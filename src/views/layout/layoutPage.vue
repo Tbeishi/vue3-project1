@@ -20,8 +20,11 @@
             <div class="header-right">
             <div class="shoppingCart" @click="router.push({name:'mycart'})" ref="CartRef">
                 <div :class="{'playAnimation': CartStore.CartMessage.playStart}">
-                <i class="iconfont icon-gouwuchekong" ></i>
-                <div class="count" v-show="cartcount > 0">{{ cartcount }}</div>
+                <i class="iconfont icon-gouwuchekong"></i>
+                <div class="count" 
+                v-show="cartcount > 0" 
+                :class="{'playAnimation': CartStore.CartMessage.playCount}"
+                >{{ cartcount }}</div>
                 </div>
                 <div class="cart">
                     <span>购物车</span>
