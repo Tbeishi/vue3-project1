@@ -1,27 +1,19 @@
-# 路由传参  使用useRouter方法
-<!--
-import { useRouter }  from 'vue-router' 
-const router = useRouter()
- const navigate = () => {
-    router.push({
-    name:'mycart',  跳转组件名字
-    params: { cartData:JSON.stringify(cartData.value) }  数据要转为JSON字符串
-  })
-} 
--->
+## 首页可以看到各商品的信息
+商品分为多品牌和一个品牌
+   - 若为多品牌，每个品牌有多个种类，商品卡片为各品牌样式，
+     商品卡片可以点击进入各种类详情页面
+   - 若为一个品牌，商品卡片为各种类样式，不进入各种类详情页面
+     可以直接加购，减购
 
-# 目标组件接收参数 使用useRoute方法
-<!-- import { useRoute } from 'vue-router'
-const route= useRoute()
-onMounted(()=>{
-console.log(route.params.mycart);
-}) -->
+## 种类详情页面
+   - 展示各品牌各个种类信息，可加购，减购
 
-# 配置动态路由参数
-<!-- 
-{
- path:'/my/cart/:cartData',
- name:'mycart',
- component: ()=> import('@/views/cartPage/cartPage.vue'),
-}
- -->
+## 零食页面
+   - 展示所有商品的信息
+   - 可根据对title的点击，做出相应的数据筛选
+
+## 购物车页面
+   - 对加购的商品进行管理，通过用户选择结算的商品进行动态优惠券计算，给出最优方案
+
+## 结算页面
+   - 收货信息的添加和切换
