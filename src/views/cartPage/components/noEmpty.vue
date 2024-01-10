@@ -91,17 +91,18 @@
       <p class="prefer" v-show="coupons !== 0 ">
         <span>共减<i>¥</i>{{ coupons }}元</span>
         <span class="detail" @click="openDrawer">查看明细<i class="iconfont icon-xiangshangjiantou"></i></span>
-        <couponsDetail 
-        ref="drawer" 
-        :allPay ="allPay" 
-        @revisePay="revisePay"
-        />
       </p>
     </div>
     <div><el-button type="success" round size="large" @click="open">结算</el-button></div>
   </div>
 </div>
 
+
+  <couponsDetail 
+      ref="drawer" 
+      :allPay ="allPay" 
+      @revisePay="revisePay"
+  />
 </div>
 </template>
 
@@ -248,6 +249,7 @@ const coupons = computed(()=>{
     }
     const curId = CouponsStore.curConpons.id
     const res = conponsLise.value.find((item)=>item.id === curId).coupon
+    CouponsStore.ConponsPay = res
     return res
   }
   return 0

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-tabs class="demo-tabs" stretch>
+        <el-tabs class="demo-tabs" stretch v-model="activeName">
             <el-tab-pane label="红包" name="first">
                 <el-scrollbar height="74vh">
                 <ul v-for="item in CouponsStore.couponsList" :key="item.id">
@@ -35,8 +35,12 @@
                 </ul>
             </el-scrollbar>
             </el-tab-pane>
-            <el-tab-pane label="券" name="second">Config</el-tab-pane>
-            <el-tab-pane label="卡" name="third">Role</el-tab-pane>
+            <el-tab-pane label="券" name="second">
+                <el-empty description="您暂时没有券哦~" />
+            </el-tab-pane>
+            <el-tab-pane label="卡" name="third">
+                <el-empty description="您暂时没有卡哦~" />
+            </el-tab-pane>
         </el-tabs>
     </div>
 </template>
@@ -45,10 +49,14 @@
 import { ref } from "vue";
 import { useCouponsStore } from '@/store/coupons.js'
 const CouponsStore = useCouponsStore()
-
+const activeName = ref('first')
 </script>
 
 <style lang="less" scoped>
+ul{
+    // padding: 0 50px;
+    padding-right: 30px;
+}
 li{
     width: 100%;
     height: 160px;
@@ -156,4 +164,8 @@ li{
     margin: 0;
 }
 
+.el-empty{
+    height: 500px;
+    padding: 0;
+}
 </style>

@@ -1,6 +1,9 @@
 <template>
-    <div>
-    <el-drawer v-model="drawer" size="500">
+    <div class="drawerBox">
+    <el-drawer v-model="drawer" 
+    size="500" 
+    close-on-press-escape
+    >
     <template #header>
       <h3>选择优惠券</h3>
     </template>
@@ -60,7 +63,7 @@ const CouponsStore = useCouponsStore()
 const drawer = ref(false)
 const lastClick = ref(0)
 const chooseIndex = ref(0)
-const CouponsLength = ref(CouponsStore.usefulCouponList.length)
+const CouponsLength = ref(CouponsStore.usefulCouponList ? CouponsStore.usefulCouponList.length : 0)
 const openDrawer = ()=>{
     drawer.value= true
 }
@@ -72,7 +75,7 @@ const handleChecked = (index)=>{
         lastClick.value = 0
         CouponsLength.value = CouponsStore.usefulCouponList.length
     }
-    if(lastClick.value === index) {
+    if(lastClick.value === index && !CouponsStore.usefulCouponList[index].isChecked) {
         CouponsStore.usefulCouponList[index].isChecked
         lastClick.value = 0
         chooseIndex.value = -1
@@ -111,6 +114,7 @@ const Couponcount =  computed(()=>{
 })
 
 const post = ()=>{
+    console.log(chooseIndex.value);
     emit('revisePay',chooseIndex.value)
     drawer.value= false
 }
@@ -169,6 +173,7 @@ li{
     .left{
         display: flex;
         margin-left: 10px;
+        color: #ff0000;
         p{
             line-height: 25px;
             text-align: center;

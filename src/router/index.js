@@ -16,7 +16,14 @@ const router = createRouter({
                 {
                     path:'/food',
                     name:'food',
-                    component:()=>import ('@/views/foodPage/foodPage.vue')
+                    redirect:'/food/all',
+                    component:()=>import ('@/views/foodPage/foodPage.vue'),
+                    children:[
+                        {
+                            path:'/food/:message',
+                            component:()=>import ('@/views/foodPage/components/PageSubject.vue'),
+                        },
+                    ]
                 },
                 {
                     path:'/member',

@@ -60,7 +60,7 @@
 </template>
 
 <script setup>
-import { ref,toRefs,defineProps,defineEmits } from 'vue';
+import { ref,toRefs } from 'vue';
 import { usefoodDetail } from '@/store/foodDetail'
 import { useCartStore } from '@/store/cart'
 const { selectedFood } = toRefs(usefoodDetail())

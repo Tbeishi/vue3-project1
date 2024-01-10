@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { useUserStore } from '@/store/user'
 const UserStore = useUserStore()
 const dialogVisible = ref(false)

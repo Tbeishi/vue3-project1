@@ -74,9 +74,8 @@
             <div>
                 <p>商品件数：<span>{{ allCount }}件</span></p>
                 <p>商品总价：<span><i>¥</i>{{ allPay }}</span></p>
-                <p>运费：<span><i>¥</i>{{ 4 }}</span></p>
-                <p>优惠：<span class="reduce">减<i>¥</i>{{ 10 }}</span></p>
-                <p>合计：<span class="allPay"><i>¥</i><span class="payCount">{{ 100 }}</span></span></p>
+                <p v-if="CouponsStore.ConponsPay">优惠：<span class="reduce">减<i>¥</i>{{ CouponsStore.ConponsPay }}</span></p>
+                <p>合计：<span class="allPay"><i>¥</i><span class="payCount">{{ needPay }}</span></span></p>
             </div>
             <el-button type="success" class="postBtn" size="large">提交订单</el-button>
         </div>
@@ -86,11 +85,13 @@
 <script setup>
 import { useCartStore } from '@/store/cart.js'
 import { useUserStore } from '@/store/user.js'
+import { useCouponsStore } from '@/store/coupons.js'
 import { computed,onMounted,ref,watch } from 'vue'
 import  addressDialog  from '@/components/addressDialog/addressDialog.vue'
 import  chooseDialog  from '@/components/addressDialog/chooseDialog.vue'
 const CartStore = useCartStore()
 const UserStore = useUserStore()
+const CouponsStore = useCouponsStore()
 const AddressDialog = ref()
 const ChooseDialog = ref()
 const address = ref({})
@@ -112,6 +113,10 @@ const openChooseDialog = ()=>{
 
 watch(UserStore.addressList,(newVal)=>{
     address.value = newVal.find(item=> item.default === true)
+})
+
+const needPay = computed(()=>{
+    return allPay.value - CouponsStore.ConponsPay
 })
 
 onMounted(()=>{
