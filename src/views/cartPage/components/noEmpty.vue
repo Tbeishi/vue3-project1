@@ -40,13 +40,19 @@
         <span>¥{{ row.price}}</span>
     </template>
   </el-table-column>
-  <el-table-column label="购买数量">
+  <el-table-column label="购买数量" width="140">
     <template #default="{row,$index}">
-        <i class="iconfont icon-jianshao" @click="reduce(row)" :class="{'showjian': animationList[$index].show,'returnjian': animationList[$index].disapper,'forbid':row.count === 1}"></i>
+      <div class="iconfont-container">
+        <i class="iconfont icon-jianshao" 
+        @click="reduce(row)" 
+        :class="{'forbid':row.count === 1,'appearJianshao':row.PlayChecked,'disappearJianshao':row.PlayChecked === false}"></i>
         <el-input type="button" size="default" style="width:42px" class="count" 
-        v-debounce="{ handler:changeAnimation, args:[$index]}"
+        v-debounce="{ handler:changeAnimation, args:[row,$index]}"
         v-model="row.count"/>
-        <i class="iconfont icon-jia" @click="row.count++" :class="{'showjia': animationList[$index].show,'returnjia': animationList[$index].disapper}"></i>
+        <i class="iconfont icon-jia" 
+        :class="{'appearJia':row.PlayChecked,'disappearJia':row.PlayChecked === false}"
+        @click="row.count++"></i>
+      </div>
     </template>
   </el-table-column>
     <el-table-column label="合计">
@@ -97,7 +103,6 @@
   </div>
 </div>
 
-
   <couponsDetail 
       ref="drawer" 
       :allPay ="allPay" 
@@ -107,7 +112,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router';
 import { useCartStore } from '@/store/cart'
@@ -121,9 +126,7 @@ const router = useRouter()
 const table = ref(null)
 const checkedList = ref([])
 const checked = ref(false)
-const animationList = ref([])
-const clickedItem = ref() 
-const manage = ref()
+const manage = ref() //管理值的控制
 const choosedItemList = ref([])
 const conponsLise = ref([])
 const drawer = ref()
@@ -133,20 +136,22 @@ const openDrawer = ()=>{
 drawer.value.openDrawer()
 }
 
-CartStore.cartNameList.forEach(() => {
+
+
+onMounted(()=>{
+  CartStore.Cartdata.forEach((item) => {
   checkedList.value.push(false)
-  animationList.value.push({show:false, disapper:false})
+  item.PlayChecked = ''
 });
+})
 
 //动画的出现和隐藏
-const changeAnimation = (event,index)=>{
-  animationList.value[index].show = true
-  if(clickedItem.value >= 0){
-    animationList.value[clickedItem.value].show = false
-    animationList.value[clickedItem.value].disapper = true
+const changeAnimation = (event,item,$index)=>{
+  item.PlayChecked = item.PlayChecked ? false : true
+  const res = CartStore.Cartdata.find((data,index)=>data.PlayChecked && $index!=index)
+  if(res != undefined){
+    res.PlayChecked = false
   }
-  clickedItem.value = index
-  animationList.value[clickedItem.value].disapper = false
 }
 
 const open = () => {
@@ -194,10 +199,6 @@ const checkAll = ()=>{
           return item
         }
       })
-})
-
-watch(CouponsStore.curConpons,()=>{
-  
 })
 
 //计算优惠金额
@@ -328,7 +329,6 @@ const deleteCart = (index)=>{
   CartStore.cartNameList.splice(index,1)
   CartStore.Cartdata.splice(index,1)
   checkedList.value.splice(index,1)
-  animationList.value.splice(index,1)
 }
 
 //监听购物车列表商品数量变化
@@ -343,7 +343,6 @@ const deleteHandel = ()=>{
     if(checkedList.value[i] === true){
       CartStore.cartNameList.splice(i,1)
       CartStore.Cartdata.splice(i,1)
-      animationList.value.splice(i,1)
       checkedList.value.splice(i,1)
       i--
       length--
@@ -452,25 +451,37 @@ const revisePay = (value)=>{
     position: relative;
     .iconfont.icon-jianshao{
     position: absolute;
-    top: 0;
-    left: 8.4vw;
     color: #00a0dc;
     font-size: 22px;
     padding: 5px 0;
     transition: all .5s;
+    left:42%;
+    opacity: 0;
     &.forbid{
     cursor:not-allowed;
     color: #a4d4e5;
+    }
+    &.appearJianshao{
+      animation: showjianshao 0.5s ease forwards;
+    } 
+    &.disappearJianshao{
+      animation: returnjianshao 0.5s ease forwards;
     } 
     }
     .iconfont.icon-jia{
+      right: 41%;
       position: absolute;
-      top: 0;
-      left: 8.4vw;
       color: #00a0dc;
       font-size: 22px;
       padding: 5px 0;
       transition: all .5s;
+      opacity: 0;
+      &.appearJia{
+      animation: showjia 0.5s ease forwards;
+      } 
+      &.disappearJia{
+      animation: returnjia 0.5s ease forwards;
+      } 
     }
   }
 }
@@ -527,38 +538,25 @@ pointer-events:none;
 @keyframes showjianshao{
   0%{opacity: 0;};
   60%{opacity: 0.5;};
-  100%{opacity: 1;transform: translate(-40px) rotate(360deg);}
+  100%{opacity: 1;left: 0 ;transform: rotate(540deg);}
+}
+
+@keyframes returnjianshao{
+  0%{opacity: 1;transform:rotate(-360deg);left: 0};
+  60%{opacity: 0.5;};
+  100%{opacity: 0;}
 }
 
 @keyframes showjia{
   0%{opacity: 0;};
   60%{opacity: 0.5;};
-  100%{opacity: 1;transform: translate(40px) rotate(360deg);}
-}
-
-@keyframes returnjianshao{
-  0%{opacity: 1;transform: translate(-40px) rotate(360deg)};
-  60%{opacity: 0.5;};
-  100%{opacity: 0;}
+  100%{opacity: 1;right: 0;transform:rotate(360deg);}
 }
 
 @keyframes returnjia{
-  0%{opacity: 1;transform: translate(40px) rotate(360deg)};
+  0%{opacity: 1;right: 0;transform:rotate(360deg)};
   60%{opacity: 0.5;};
   100%{opacity: 0;}
-}
-.showjian{
-  animation: showjianshao 1.3s ease forwards;
-}
-.returnjian{
-  animation: returnjianshao 1.3s ease forwards;
-}
-  
-.showjia{
-  animation: showjia 1.3s ease forwards;
-}
-.returnjia{
-  animation: returnjia 1.3s ease forwards;
 }
 
 .el-input{

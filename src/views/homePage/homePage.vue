@@ -59,13 +59,13 @@ const addFood = (item)=>{
   }
 
   const reduceFood = (item)=>{
-    if(item.count > 1) item.count --
     if(item.count === 1) {
         item.Ischecked = false
         setTimeout(()=>{
             item.count --
         },200)
     }
+    if(item.count > 1) item.count --
   }
 </script>
 
