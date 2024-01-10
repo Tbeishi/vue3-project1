@@ -19,7 +19,7 @@
 
             <div class="header-right">
             <div class="shoppingCart" @click="router.push({name:'mycart'})" ref="CartRef">
-                <div :class="{'playAnimation': playStart}">
+                <div :class="{'playAnimation': CartStore.CartMessage.playStart}">
                 <i class="iconfont icon-gouwuchekong" ></i>
                 <div class="count" v-show="cartcount > 0">{{ cartcount }}</div>
                 </div>
@@ -49,11 +49,7 @@
     </div>   
         </el-header>
         <el-main ref="scroll">
-           <router-view 
-           @getcardHeight="getcardHeight" 
-           :CartMessage="CartMessage"
-           @AnimationEnd="AnimationEnd"
-           />
+           <router-view/>
         </el-main>
       </el-container>
     </div>
@@ -68,12 +64,8 @@ import { useCartStore } from '@/store/cart'
 const router = useRouter()
 import { useScroll } from '@vueuse/core'
 const scroll = ref(null)
-const cardHeight = ref([])
 const CartStore = useCartStore()
-
 const CartRef = ref()
-const CartMessage = ref({})
-const playStart = ref(false)
 const getScrollY = ()=>{
     const { y } = useScroll(scroll);
     watch(y,(newVal)=>{
@@ -81,27 +73,15 @@ const getScrollY = ()=>{
     })
 }
 onMounted(()=>{
-    getScrollY()
-    CartMessage.value.left = CartRef.value.getBoundingClientRect().left
-    CartMessage.value.top = CartRef.value.getBoundingClientRect().top
-    CartMessage.value.clientWidth = CartRef.value.clientWidth
-    CartMessage.value.clientHeight = CartRef.value.clientHeight
+    CartStore.CartMessage.left = CartRef.value.getBoundingClientRect().left
+    CartStore.CartMessage.top = CartRef.value.getBoundingClientRect().top
+    CartStore.CartMessage.clientWidth = CartRef.value.clientWidth
+    CartStore.CartMessage.clientHeight = CartRef.value.clientHeight
 })
-
-const getcardHeight = (e)=>{
-    cardHeight.value = e
-}
 
 const cartcount = computed(()=>{
     return CartStore.Cartdata.reduce((pre,cur)=>pre + cur.count,0)
 })
-
-const AnimationEnd = (e)=>{
-     playStart.value = e
-     setTimeout(()=>{
-        playStart.value = false
-     },500)
-}
 </script>
 
 <style lang="less" scoped>

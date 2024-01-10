@@ -21,7 +21,7 @@
                 <span class="buyCount"
                 :class="{'appear':item.Ischecked,'disappear':item.Ischecked === false}"
                 >{{ item.count }}</span>
-                <i class="iconfont icon-jia" @click="addFood(item)"></i>
+                <i class="iconfont icon-jia" @click="addFood($event,item)"></i>
             </template>
             <template #button v-else>
                 <el-button 
@@ -34,6 +34,18 @@
           </foodCard>
     </div> 
     </div>
+
+    <transition appear  
+        @before-appear="beforeEnter"
+        @after-appear="afterEnter"
+        @after-leave="handleAnimationEnd"
+        v-for="(item,index) in showBall"
+        :key="index"
+        >
+            <div class="ball" :style="ballStyle" v-if="item">
+                <img src="../../assets/picture/加.png" alt="">
+            </div>
+        </transition>
     </div>
 </template>
 
@@ -45,17 +57,44 @@ import homePlayPic from '@/components/homePlayPic/homePlayPic.vue'
 import radiusCard from '@/components/radiusCard/radiusCard.vue'
 import foodCard from '@/components/foodCard/foodCard.vue';
 import getCardData from './cardData'
+import { useCartStore } from '@/store/cart'
+const CartStore = useCartStore()
 onMounted(()=>{
 foodData.value = getData()
 cardData.value = getCardData()
 })
-
+const elLeft = ref(0) //记录所点击商品加购图标到页面左边距离
+const elTop = ref(0) //记录所点击商品加购图标到页面顶部距离
+const showBall = ref([])//控制小球显示
+const ballStyle = ref({
+    left: elLeft.value,
+    top: elTop.value
+})
 const foodData = ref([])
 const cardData = ref([])
 
-const addFood = (item)=>{
+const beforeEnter = (el)=>{
+    el.style.transform = `translate(${elLeft.value -80}px,${elTop.value - 100}px)`
+    el.style.opacity = 0;
+}
+
+const afterEnter = (el)=>{
+    const { left,top,clientWidth,clientHeight } = CartStore.CartMessage //购物车到网页左边和顶部的距离
+    //设置小球移动的位移
+    el.style.transform = `translate3d(${left-clientWidth - 10}px,${top-clientHeight-70}px,0)`
+    //增加贝塞尔曲线all 500ms cubic-bezier()
+    el.style.transition = 'transform .3s cubic-bezier(0.270, 0.115, 0.945, 0.535)'
+    el.style.transition = 'transform .3s linear'
+    showBall.value = showBall.value.map(item => false)
+    el.style.opacity = 1;
+}
+
+const addFood = (event,item)=>{
     item.count ++ 
     if(item.count === 1)item.Ischecked = true
+    elLeft.value = event.clientX;
+    elTop.value = event.clientY;
+    showBall.value.push('true')
   }
 
   const reduceFood = (item)=>{
@@ -67,9 +106,47 @@ const addFood = (item)=>{
     }
     if(item.count > 1) item.count --
   }
+
+const handleAnimationEnd = ()=>{
+    CartStore.CartMessage.playStart = true
+    // addCartData() //动画结束后才将商品数据添加到购物车
+    setTimeout(()=>{
+        CartStore.CartMessage.playStart = false
+     },500)
+}
 </script>
 
 <style lang="less" scoped>
+.ball{
+    width: 24px;
+    height: 24px;
+    position: fixed;
+    border-radius: 14px;
+    z-index: 999;
+    img{
+        width: 100%;
+        height: 100%;
+        animation: 1s ballScale ease-in-out;
+    }
+}
+
+@keyframes ballScale {
+    0%{
+        transform: scale(1);
+    }
+    30%{
+        transform: scale(0.8);
+    }
+    60%{
+        transform: scale(0.6);
+    }
+    90%{
+        transform: scale(0.4);
+    }
+    100%{
+        transform: scale(0.2);
+    }
+}
 .homePage{
     height: 100%;
     padding: 0 70px;

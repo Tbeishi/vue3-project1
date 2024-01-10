@@ -116,20 +116,22 @@ const beforeEnter = (el)=>{
 }
 
 const afterEnter = (el)=>{
-    const { left,top,clientWidth,clientHeight } = props.CartMessage //购物车到网页左边和顶部的距离
+    const { left,top,clientWidth,clientHeight } = CartStore.CartMessage //购物车到网页左边和顶部的距离
     //设置小球移动的位移
     el.style.transform = `translate3d(${left-clientWidth - 20}px,${top-clientHeight-70}px,0)`
     //增加贝塞尔曲线
-    el.style.transition = 'transform .55s cubic-bezier(0.3,-0.25,0.7,-0.15)'
-    el.style.transition = 'transform .55s linear'
+    el.style.transition = 'transform .4s cubic-bezier(0.3,-0.25,0.7,-0.15)'
+    el.style.transition = 'transform .4s linear'
     showBall.value = showBall.value.map(item => false)
     el.style.opacity = 1;
 }
 
-const emit = defineEmits(['AnimationEnd'])
 const handleAnimationEnd = ()=>{
-    emit('AnimationEnd',true)
+    CartStore.CartMessage.playStart = true
     addCartData() //动画结束后才将商品数据添加到购物车
+    setTimeout(()=>{
+        CartStore.CartMessage.playStart = false
+     },500)
 }
 </script>
 
