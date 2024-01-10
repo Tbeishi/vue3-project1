@@ -5,7 +5,7 @@
             </div>
             <div class="card-container">
             <div class="sellName">{{ food.categoryName }}</div>
-            <div class="sellCount">销量<div class="count">{{ food.sellCount }}</div></div>
+            <div class="sellCount"><slot name="sellCount"></slot></div>
             <div class="sellPrice">
                 <div class="PriceMessage">
                 <span class="price">
@@ -74,10 +74,6 @@ const toDetail = (item)=>{
     font-size: 14px;
     margin-top: 2px;
     color: rgb(174, 174, 174);
-    .count{
-        display: inline-block;
-        padding-left: 2px;
-    }
 }
 
 .sellPrice{

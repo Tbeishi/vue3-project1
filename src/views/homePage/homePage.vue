@@ -13,6 +13,10 @@
           :key="item.categoryId" 
           :food="item"   
           >
+          <template #sellCount>
+            <span>销量</span>
+            <p class="count">{{ item.sellCount }}</p>
+          </template>
             <template #button v-if="!item.kinds">
                 <i class="iconfont icon-jianshao" 
                 :class="{'appear':item.Ischecked,'disappear':item.Ischecked === false,'active':item.Isactive}"
@@ -208,6 +212,11 @@ const handleAnimationEnd = ()=>{
     grid-column-gap: 40px;
     grid-row-gap: 30px;
     width: 100%;
+    .count{
+        display: inline-block;
+        padding-top: 0.7px;
+        padding-left: 2px;
+    }
 }
 
 .el-btn{

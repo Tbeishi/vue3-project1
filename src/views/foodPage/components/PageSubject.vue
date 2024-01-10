@@ -6,6 +6,14 @@
         :key="food.categoryId"
         :food="food"
         >
+        <template #sellCount v-if="isRankingList">
+            <span>{{ RankingList }}</span>
+            <p class="count">{{ food[emnu[title]] }}</p>
+        </template>
+        <template #sellCount v-else>
+            <span>{{ RankingList }}</span>
+            <p class="count">{{ food.sellCount }}</p>
+        </template>
         <template #button v-if="!food.kinds">
             <i class="iconfont icon-jianshao" 
             :class="{'appear':food.Ischecked,'disappear':food.Ischecked === false,'active':food.Isactive === true}"
@@ -44,10 +52,11 @@
 <script setup>
 import foodCard from '@/components/foodCard/foodCard.vue'
 import {  onMounted,ref,watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute,useRouter } from 'vue-router';
 import getData from '../../homePage/foodData'
 import foodcategory from '@/components/foodcategory/foodcategory.vue'
 import { useCartStore } from '@/store/cart'
+const router = useRouter()
 const  CartStore  = useCartStore()
 const allData = ref()
 const foodData = ref()
@@ -56,12 +65,6 @@ const loading = ref(false)
 const emptyValue = ref(false)
 const title = ref('')
 const curFood = ref()
-const emnu = ref({
-    '24小时热销榜':message => allData.value.sort(sortRules(message)),
-    '周销榜': message => allData.value.sort(sortRules(message)),
-    '月销榜':message => allData.value.sort(sortRules(message)),
-    '总销榜':message => allData.value.sort(sortRules(message)),
-})
 const elLeft = ref(0) //记录所点击商品加购图标到页面左边距离
 const elTop = ref(0) //记录所点击商品加购图标到页面顶部距离
 const showBall = ref([])//控制小球显示
@@ -69,6 +72,33 @@ const ballStyle = ref({
     left: elLeft.value,
     top: elTop.value
 })
+
+const isRankingList = ref(false)  //是否是排行榜
+const RankingList = ref('销售')  //销售，日销售,周销售,月销售,总销售
+const emnu = ref({
+    '24小时热销榜':'daySellCount',
+    '周销榜': 'weekSellCount',
+    '月销榜':'monthSellCount',
+    '总销榜':'sellCount',
+})
+
+const emnu2 = ref({
+    '24小时热销榜':'日销售',
+    '周销榜': '周销售',
+    '月销榜':'月销售',
+    '总销榜':'总销售',
+})
+
+function sortRules(props){
+    return function (a,b) {
+        return b[props] - a[props]
+    }
+}
+
+function filterData(message){
+    return allData.value.sort(sortRules(message))
+}
+
 onMounted(()=>{
 const arr = []
 getData().forEach((item)=>{
@@ -85,21 +115,20 @@ getData().forEach((item)=>{
 arr.sort(sortRules('sellCount'))
 allData.value = arr
 foodData.value = arr
+router.push('/food')
 })
-
-function sortRules(props){
-    return function (a,b) {
-        return b[props] - a[props]
-    }
-}
 
 const getIceData = (message)=>{
     if(message === 'all'){
         title.value = ''
         foodData.value = allData.value
     }
+    else if(isRankingList.value){
+        foodData.value = filterData(emnu.value[message])
+        title.value = message
+    }
     else {
-        foodData.value = allData.value.filter((item)=>item.foodName === message) || emnu.value[newval](newval)
+        foodData.value = allData.value.filter((item)=>item.foodName === message) 
         title.value = message
     }
     emptyValue.value = foodData.value.length === 0 ? true : false
@@ -107,7 +136,17 @@ const getIceData = (message)=>{
 
 //使用 watch 监听动态路由参数的变化
   watch(() => route.params.message, (newval) => {
+    if(emnu.value[newval]!=undefined){
+        isRankingList.value = true
+        RankingList.value = emnu2.value[newval]
+    }
+    else{
+        isRankingList.value = false
+        RankingList.value = '销售'
+    }
+    console.log(RankingList.value);
     getIceData(newval)
+    
     // 在参数变化时执行逻辑
   });
 
@@ -217,7 +256,11 @@ const addCartData = ()=>{
     width: 100%;
     margin-bottom: 40px;
     padding: 0 40px;
-    // margin-top: 20px;
+    .count{
+        display: inline-block;
+        padding-top: 0.7px;
+        padding-left: 2px;
+    }
 }
 
 .title{
