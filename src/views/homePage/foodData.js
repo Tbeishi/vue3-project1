@@ -272,6 +272,7 @@ export default function  getData(){
             daySellCount:7,
             weekSellCount:15,
             monthSellCount:45,
+            count: 0,
           },
           {
             categoryId: 22,
@@ -282,6 +283,7 @@ export default function  getData(){
             daySellCount:2,
             weekSellCount:4,
             monthSellCount:8,
+            count: 0,
           },
           {
             categoryId: 23,
@@ -292,6 +294,7 @@ export default function  getData(){
             daySellCount:3,
             weekSellCount:6,
             monthSellCount:9,
+            count: 0,
           },
           {
             categoryId: 24,
@@ -302,6 +305,7 @@ export default function  getData(){
             daySellCount:4,
             weekSellCount:7,
             monthSellCount:9,
+            count: 0,
           },
           {
             categoryId: 25,
@@ -313,6 +317,7 @@ export default function  getData(){
             daySellCount:2,
             weekSellCount:4,
             monthSellCount:8,
+            count: 0,
           },
           {
             categoryId: 26,
@@ -324,6 +329,7 @@ export default function  getData(){
             daySellCount:3,
             weekSellCount:9,
             monthSellCount:12,
+            count: 0,
           },
           {
             categoryId: 27,
@@ -335,6 +341,7 @@ export default function  getData(){
             daySellCount:2,
             weekSellCount:4,
             monthSellCount:6,
+            count: 0,
           },
           {
             categoryId: 28,
@@ -346,6 +353,7 @@ export default function  getData(){
             daySellCount:8,
             weekSellCount:14,
             monthSellCount:26,
+            count: 0,
           },
           {
             categoryId: 29,
@@ -357,6 +365,7 @@ export default function  getData(){
             daySellCount:1,
             weekSellCount:3,
             monthSellCount:5,
+            count: 0,
           }
         ]
        },
@@ -429,6 +438,7 @@ export default function  getData(){
           daySellCount:52,
           weekSellCount:92,
           monthSellCount:104,
+          count: 0,
         },
         {
           categoryId: 42,
@@ -440,6 +450,7 @@ export default function  getData(){
           daySellCount:34,
           weekSellCount:64,
           monthSellCount:92,
+          count: 0,
         },
         {
           categoryId: 43,
@@ -451,6 +462,7 @@ export default function  getData(){
           daySellCount:26,
           weekSellCount:55,
           monthSellCount:87,
+          count: 0,
         },
         {
           categoryId: 44,
@@ -462,6 +474,7 @@ export default function  getData(){
           daySellCount:39,
           weekSellCount:65,
           monthSellCount:93,
+          count: 0,
         },
         ]
       }  

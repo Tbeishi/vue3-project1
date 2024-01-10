@@ -113,6 +113,7 @@ const toDetail = (item)=>{
         color:#00a0dc;
         transform: translateY(-10px);
         align-items: center;
+        position: relative;
         i{
             font-size: 30px;
         }

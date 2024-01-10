@@ -7,9 +7,14 @@
         :food="food"
         >
         <template #button v-if="!food.kinds">
-            <i class="iconfont icon-jianshao"></i>
-            <span class="buyCount">3</span>
-            <i class="iconfont icon-jia"></i>
+            <i class="iconfont icon-jianshao" 
+            :class="{'appear':food.Ischecked,'disappear':food.Ischecked === false}"
+            @click="reduceFood(food)"
+            ></i>
+            <span class="buyCount"
+            :class="{'appear':food.Ischecked,'disappear':food.Ischecked === false}"
+            >{{ food.count }}</span>
+            <i class="iconfont icon-jia" @click="addFood(food)"></i>
         </template>
         <template #button v-else>
                 <el-button 
@@ -78,6 +83,22 @@ const getIceData = (message)=>{
     getIceData(newval)
     // 在参数变化时执行逻辑
   });
+
+  const addFood = (item)=>{
+    item.count ++ 
+    // console.log(666);
+    if(item.count === 1)item.Ischecked = true
+  }
+
+  const reduceFood = (item)=>{
+    if(item.count > 1) item.count --
+    if(item.count === 1) {
+        item.Ischecked = false
+        setTimeout(()=>{
+            item.count --
+        },200)
+    }
+  }
 </script>
 
 <style lang="less" scoped>
@@ -96,17 +117,10 @@ const getIceData = (message)=>{
     padding: 0 40px;
     margin:20px 0 0 0;
 }
-.iconfont{
-    font-size: 28px;
-}
+
 
 .el-empty{
     width: 84vw;
-}
-
-.buyCount{
-    color:rgb(0, 0, 0);
-    padding: 0 3px;
 }
 
 .el-btn{
@@ -114,5 +128,65 @@ const getIceData = (message)=>{
     font-size: 13px;
     width: 80px;
     height: 40px;
+}
+
+.buyCount{
+    color:rgb(0, 0, 0);
+    padding: 0 8px;
+    transition: all .3s;
+    position: absolute;
+    right: 4.5px;
+    opacity: 0;
+    &.appear{
+    animation: appearCount 0.6s ease forwards;
+    }
+    &.disappear{
+    animation: disappearCount 0.2s ease forwards;
+    }
+}
+
+.iconfont{
+    font-size: 28px;
+}
+
+.iconfont.icon-jia{
+    z-index: 2;
+}
+
+.iconfont.icon-jianshao{
+  transition: all .3s;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  &.appear{
+    animation: appearjianhao 0.6s ease forwards;
+  }
+  &.disappear{
+    animation: disappearjianhao 0.4s ease forwards;
+  }
+}
+
+@keyframes appearjianhao{
+  0%{transform: translateX(0) rotate(540deg);opacity: 0};
+  70%{opacity: 0.6;}
+  100%{transform: translateX(-57.38px);opacity: 1;}
+}
+
+@keyframes disappearjianhao{
+  0%{transform: translateX(-57.38px) rotate(-360deg);opacity: 1};
+  50%{opacity: 0.2;}
+  100%{transform: translateX(0);opacity: 0;}
+}
+
+@keyframes appearCount{
+  0%{transform: translateX(0) rotate(540deg);opacity: 0};
+  70%{opacity: 0.6;}
+  100%{transform: translateX(-28.69px) ;opacity: 1;}
+}
+
+@keyframes disappearCount{
+  0%{transform: translateX(-28.69px) rotate(-360deg);opacity: 1};
+  50%{opacity: 0.2;}
+  100%{transform: translateX(0);opacity: 0;}
 }
 </style>
