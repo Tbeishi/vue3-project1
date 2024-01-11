@@ -11,9 +11,17 @@
             <img src="../../assets/picture/头像.jpg" style="height: 100%;margin:0 10px 0 30px"/>
             <span class="title">小米露零食店</span>
             <el-menu-item index="/sy">首页</el-menu-item>
-            <el-menu-item index="/food">零食</el-menu-item>
+            <el-menu-item :index="`/food/${$route.params.message}`">零食</el-menu-item>
             <el-menu-item index="/member">会员</el-menu-item>
-            <el-input placeholder="搜索名称或类别" :suffix-icon="Search"  style="width:300px;margin: auto 10px;height: 5vh;"/>
+            <el-input placeholder="搜索名称或类别" 
+            style="width:300px;margin: auto 10px;height: 5vh;"
+            @keyup.enter="SearchMethod"
+            v-model="SearchValue"
+            >
+            <template #suffix>
+                <el-icon size="20" @click="SearchMethod" style="cursor: pointer"><Search/></el-icon>
+            </template>
+            </el-input>
             </el-menu>
         </div>
 
@@ -62,29 +70,38 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import defaultAvatar from '@/assets/picture/默认头像.jpg'
 import { Search,CaretBottom,Message,PictureFilled,SwitchButton } from '@element-plus/icons-vue'
-import { useRouter } from 'vue-router'
+import { useRouter,useRoute } from 'vue-router'
 import { useCartStore } from '@/store/cart'
 const router = useRouter()
 import { useScroll } from '@vueuse/core'
 const scroll = ref(null)
 const CartStore = useCartStore()
 const CartRef = ref()
+const membersChild = ref()
+const SearchValue = ref()
 const getScrollY = ()=>{
     const { y } = useScroll(scroll);
     watch(y,(newVal)=>{
     
     })
 }
+const route = useRoute()
+
 onMounted(()=>{
     CartStore.CartMessage.left = CartRef.value.getBoundingClientRect().left
     CartStore.CartMessage.top = CartRef.value.getBoundingClientRect().top
     CartStore.CartMessage.clientWidth = CartRef.value.clientWidth
     CartStore.CartMessage.clientHeight = CartRef.value.clientHeight
+    membersChild.value = route.matched[0].children[2].children
 })
 
 const cartcount = computed(()=>{
     return CartStore.Cartdata.reduce((pre,cur)=>pre + cur.count,0)
 })
+
+const SearchMethod = ()=>{
+    router.push({path:`/search/${SearchValue.value}`})
+}
 </script>
 
 <style lang="less" scoped>

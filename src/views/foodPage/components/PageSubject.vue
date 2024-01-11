@@ -1,5 +1,11 @@
 <template>
-    <foodcategory :title="title" class="title" v-if="title && !emptyValue"></foodcategory>
+    <foodcategory :title="title" class="title" v-if="title && !emptyValue">
+    <template #iconfont v-if="isRankingList">
+        <i class="iconfont" 
+        :class="emnu[title].iconClass"
+        ></i>
+    </template>
+    </foodcategory>
     <div class="container-food" v-loading="loading">
         <foodCard 
         v-for="food in foodData"
@@ -8,7 +14,7 @@
         >
         <template #sellCount v-if="isRankingList">
             <span>{{ RankingList }}</span>
-            <p class="count">{{ food[emnu[title]] }}</p>
+            <p class="count">{{ food[emnu[title].sellMessage] }}</p>
         </template>
         <template #sellCount v-else>
             <span>{{ RankingList }}</span>
@@ -73,20 +79,30 @@ const ballStyle = ref({
     top: elTop.value
 })
 
+
 const isRankingList = ref(false)  //是否是排行榜
 const RankingList = ref('销售')  //销售，日销售,周销售,月销售,总销售
 const emnu = ref({
-    '24小时热销榜':'daySellCount',
-    '周销榜': 'weekSellCount',
-    '月销榜':'monthSellCount',
-    '总销榜':'sellCount',
-})
-
-const emnu2 = ref({
-    '24小时热销榜':'日销售',
-    '周销榜': '周销售',
-    '月销榜':'月销售',
-    '总销榜':'总销售',
+    '24小时热销榜':{
+        sellMessage:'daySellCount',
+        sellContent:'日销售',
+        iconClass:'icon-icon_rexiaopng',
+    },
+    '周销榜': {
+        sellMessage:'weekSellCount',
+        sellContent:'周销售',
+        iconClass:'icon-benzhou',
+    },
+    '月销榜':{
+        sellMessage:'monthSellCount',
+        sellContent:'月销售',
+        iconClass:'icon-yuetongyuebao_0',
+    },
+    '总销榜':{
+        sellMessage:'sellCount',
+        sellContent:'总销售',
+        iconClass:'icon-huangguan',
+    }
 })
 
 function sortRules(props){
@@ -115,7 +131,7 @@ getData().forEach((item)=>{
 arr.sort(sortRules('sellCount'))
 allData.value = arr
 foodData.value = arr
-router.push('/food')
+router.push({path:'/food'})
 })
 
 const getIceData = (message)=>{
@@ -124,7 +140,7 @@ const getIceData = (message)=>{
         foodData.value = allData.value
     }
     else if(isRankingList.value){
-        foodData.value = filterData(emnu.value[message])
+        foodData.value = filterData(emnu.value[message].sellMessage)
         title.value = message
     }
     else {
@@ -136,17 +152,17 @@ const getIceData = (message)=>{
 
 //使用 watch 监听动态路由参数的变化
   watch(() => route.params.message, (newval) => {
-    if(emnu.value[newval]!=undefined){
+    if(emnu.value[newval] != undefined){
         isRankingList.value = true
-        RankingList.value = emnu2.value[newval]
+        RankingList.value = emnu.value[newval].sellContent
     }
     else{
         isRankingList.value = false
         RankingList.value = '销售'
     }
-    console.log(RankingList.value);
     getIceData(newval)
-    
+    console.log(route.meta);
+
     // 在参数变化时执行逻辑
   });
 
@@ -266,6 +282,11 @@ const addCartData = ()=>{
 .title{
     padding: 0 40px;
     margin:20px 0 0 0;
+    i{
+        font-size: 30px;
+        margin-right: 5px;
+        color:rgb(255, 0, 0)
+    }
 }
 
 

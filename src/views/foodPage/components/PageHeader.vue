@@ -24,7 +24,7 @@ onMounted(()=>{
 
 const handleItem = (item)=>{
     active.value = item
-    router.push(`/food/${item}`)
+    router.push({path:`/food/${item}`})
 }
 
 const getIceData = ()=>{

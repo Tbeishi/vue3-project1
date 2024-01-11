@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="discountPage">
         <el-tabs class="demo-tabs" stretch v-model="activeName">
             <el-tab-pane label="红包" name="first">
                 <el-scrollbar height="74vh">
@@ -53,6 +53,9 @@ const activeName = ref('first')
 </script>
 
 <style lang="less" scoped>
+.discountPage{
+    margin: 0 50px;
+}
 ul{
     // padding: 0 50px;
     padding-right: 30px;

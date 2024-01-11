@@ -63,6 +63,11 @@ const router = createRouter({
                     name:'pay',
                     component:()=>import ('@/views/payPage/payPage.vue')
                 },
+                {
+                    path:'/search/:searchData',
+                    name:'search',
+                    component:()=>import ('@/views/searchPage/searchPage.vue')
+                },
             ]
         },
        

@@ -9,8 +9,6 @@
             <el-menu
                 :default-active="$route.path"
                 class="el-menu-vertical-demo"
-                @open="handleOpen"
-                @close="handleClose"
                 router
             >
                 <el-menu-item index="/member/mydata">
@@ -61,7 +59,7 @@
 }
 
 .memberSub{
-    margin: 10px 50px;
+    margin: 10px 0;
     flex:1
 }
 .aside{
