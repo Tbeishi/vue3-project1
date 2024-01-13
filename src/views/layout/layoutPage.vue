@@ -41,7 +41,7 @@
             <div>
                 我的订单
             </div>
-            <div class="toLogin">
+            <div class="toLogin" @click="$router.push('/login')">
                 去登录
             </div>
             <el-dropdown placement="bottom-end">  
@@ -53,7 +53,7 @@
           <el-dropdown-menu>
             <el-dropdown-item :icon="Message" command="profile">基本资料</el-dropdown-item>
             <el-dropdown-item :icon="PictureFilled" command="avatar">更换头像</el-dropdown-item>
-            <el-dropdown-item :icon="SwitchButton" command="layout">退出登录</el-dropdown-item>
+            <el-dropdown-item :icon="SwitchButton" command="layout" @click="$router.push('/login')">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
         </el-dropdown> 

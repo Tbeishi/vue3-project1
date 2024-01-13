@@ -76,7 +76,6 @@ watch(()=>route.params.searchData,(newVal)=>{
     searchValue.value = newVal
     getSearchData(newVal)
 })
-
 </script>
 
 
