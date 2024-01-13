@@ -28,11 +28,12 @@ import { usefoodDetail } from '@/store/foodDetail'
 import { useRouter } from 'vue-router';
 const foodDetail = usefoodDetail()
 const router = useRouter()
-defineProps({
+const props = defineProps({
     food:{
         type:Object
     }
 })
+
 const toDetail = (item)=>{
     if(item.kinds){
         foodDetail.selectedFood = item

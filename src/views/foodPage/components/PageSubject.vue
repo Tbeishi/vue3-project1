@@ -41,8 +41,11 @@
                 选择样式</el-button>
         </template>
         </foodCard>
+       </div>
+        <div>
+        <div>
         <el-empty description="暂时没有数据哦~" v-if="emptyValue"/>
-
+        </div>
         <transition appear  
         @before-appear="beforeEnter"
         @after-appear="afterEnter"
@@ -132,6 +135,7 @@ getData().forEach((item)=>{
 })
 arr.sort(sortRules('sellCount'))
 allData.value = arr
+console.log(arr);
 foodData.value = arr
 router.push({path:'/food'})
 })
@@ -146,7 +150,15 @@ const getIceData = (message)=>{
         title.value = message
     }
     else {
-        foodData.value = allData.value.filter((item)=>item.foodName === message) 
+        const arr = allData.value.filter((item)=>item.foodName === message)
+        arr.forEach((item)=>{
+            if(item.count>0) item.Isactive = true
+            else{
+                item.Isactive = false
+            }
+            item.Ischecked = ''
+        })
+        foodData.value = arr
         title.value = message
     }
     emptyValue.value = foodData.value.length === 0 ? true : false
@@ -163,8 +175,6 @@ const getIceData = (message)=>{
         RankingList.value = '销售'
     }
     getIceData(newval)
-    console.log(route.meta);
-
     // 在参数变化时执行逻辑
   });
 
@@ -205,7 +215,6 @@ const afterEnter = (el)=>{
     if(item.count > 1){
         item.count --
         CartStore.Cartdata[id].count = item.count
-        console.log(CartStore.CartMessage.playCount);
     }
     CartStore.CartMessage.playCount = true
         setTimeout(()=>{

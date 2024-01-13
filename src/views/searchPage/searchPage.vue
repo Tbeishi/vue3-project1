@@ -46,12 +46,26 @@ const getSearchData = (search)=>{
     const res = []
     const arr = getData().filter(item=>item.foodName.includes(search))
     arr.forEach((item)=>{
-        item.category.forEach(food=>res.push(food))
+        item.category.forEach((food)=>{
+            const id = CartStore.cartNameList.indexOf(food.categoryId)
+            if(id!==-1){
+                food.count = CartStore.Cartdata[id].count
+                food.Isactive = true
+            }
+            food.foodName = item.foodName
+            res.push(food)
+        })
     })
     foodData.value = res
     const temp = []
     getData().forEach((item)=>{
         item.category.forEach((food)=>{
+            const id = CartStore.cartNameList.indexOf(food.categoryId)
+            if(id!==-1){
+                food.count = CartStore.Cartdata[id].count
+                food.Isactive = true
+            }
+            food.foodName = item.foodName
             temp.push(food)
         })
     })
@@ -62,6 +76,7 @@ watch(()=>route.params.searchData,(newVal)=>{
     searchValue.value = newVal
     getSearchData(newVal)
 })
+
 </script>
 
 

@@ -48,7 +48,7 @@
         <template #label>
             <div class="cell-item">
             <el-icon>
-                <office-building />
+                <Message />
             </el-icon>
            邮箱
             </div>
@@ -60,6 +60,5 @@
 </template>
 
 <script setup>
-// import { user,iphone,location,officeBuilding } from '@element-plus/icons-vue'
-
+import {Iphone,Location,OfficeBuilding,User,Message} from '@element-plus/icons-vue'
 </script>

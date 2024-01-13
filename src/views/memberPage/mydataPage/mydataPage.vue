@@ -12,7 +12,7 @@
                 <span class="recharge" @click="addMoney">会员充值</span>
                 <dialog ref="dialogRef"></dialog>
                 <p>账户余额:</p>
-                <sapn class="accountNumber">520</sapn>
+                <sapn class="accountNumber"><i>¥</i>520</sapn>
             </div>
         </div>
 

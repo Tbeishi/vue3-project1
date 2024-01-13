@@ -44,7 +44,7 @@
 
 <script setup>
 import { useCartStore } from '@/store/cart'
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import foodCard from '@/components/foodCard/foodCard.vue'
 const props = defineProps({
     foodData:{
