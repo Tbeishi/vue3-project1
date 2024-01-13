@@ -31,7 +31,7 @@
             <el-icon><location /></el-icon>位置
             </div>
         </template>
-        Suzhou
+        中国
     </el-descriptions-item>
         <el-descriptions-item>
         <template #label>
@@ -39,11 +39,27 @@
             <el-icon>
                 <office-building />
             </el-icon>
-            Address
+           收货地址
             </div>
         </template>
-        No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
+        No.1188
+        </el-descriptions-item>
+        <el-descriptions-item>
+        <template #label>
+            <div class="cell-item">
+            <el-icon>
+                <office-building />
+            </el-icon>
+           邮箱
+            </div>
+        </template>
+        123@1.c
         </el-descriptions-item>
     </el-descriptions>
     </div>
 </template>
+
+<script setup>
+// import { user,iphone,location,officeBuilding } from '@element-plus/icons-vue'
+
+</script>

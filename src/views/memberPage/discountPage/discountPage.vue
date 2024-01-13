@@ -29,7 +29,7 @@
                         </span>
                         <div class="footer">
                             <div>{{ item.CouponRange }}</div>
-                            <el-button type="danger">去使用</el-button>
+                            <el-button type="danger" @click="$router.push({path:'/food'})">去使用</el-button>
                         </div>
                     </li>
                 </ul>

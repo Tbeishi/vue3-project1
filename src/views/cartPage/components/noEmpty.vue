@@ -249,7 +249,7 @@ const coupons = computed(()=>{
     const curId = CouponsStore.curConpons.id
     const res = conponsLise.value.find((item)=>item.id === curId).coupon
     CouponsStore.ConponsPay = res
-    return res.toFixed(2)
+    return res
   }
   return 0
 })

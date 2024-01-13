@@ -2,13 +2,22 @@
     <div class="mydataPage">
         <div class="container-header">
             <div class="avater">
-                <img src="/src/assets/picture/default.jpg" class="img">
+                <img :src=imageUrl class="img">
                 <div>
                 <p class="username">小米露</p>
                 <p class="vip">VIP会员</p>
                 </div>
             </div>
-            <div>
+            <div class="account">
+                <span class="recharge" @click="addMoney">会员充值</span>
+                <dialog ref="dialogRef"></dialog>
+                <p>账户余额:</p>
+                <sapn class="accountNumber">520</sapn>
+            </div>
+        </div>
+
+        <mydataSubject/>
+        <div>
                 <el-upload 
                     action="#" 
                     :on-change="handleChange"
@@ -17,16 +26,7 @@
                     >
                     <el-button type="primary" size="small">更换头像</el-button>
                     </el-upload>
-            </div>
-            <div class="account">
-                <span class="recharge">会员充值</span>
-                <p>账户余额:<sapn class="accountNumber">520</sapn></p>
-            </div>
         </div>
-        <img :src=imageUrl alt="">
-        <img src="" alt="">
-
-        <mydataSubject/>
     </div>
 </template>
 
@@ -34,8 +34,9 @@
 import { ref } from "vue";
 import { ElMessage } from 'element-plus'
 import mydataSubject from './components/mydataSubject.vue'
-const imageUrl = ref()
-
+import dialog from "./components/dialog.vue";
+const imageUrl = ref('/src/assets/picture/default.jpg')
+const dialogRef = ref()
 const beforeUpload = (file) => {
       const isImage = file.type.startsWith('image/');
       if (!isImage) {
@@ -54,6 +55,10 @@ const handleChange = (file) => {
       if (file.raw) {
         imageUrl.value = URL.createObjectURL(file.raw);
     }
+}
+
+const addMoney = ()=>{
+    dialogRef.value.open()
 }
 </script>
 
@@ -103,9 +108,12 @@ const handleChange = (file) => {
         align-items: center;
         .recharge{
             margin-right: 25px;
+            cursor:pointer
         }
         .accountNumber{
             margin-left: 5px;
+            font-weight: 700;
+            font-size: 23px;
         }
     }
 }

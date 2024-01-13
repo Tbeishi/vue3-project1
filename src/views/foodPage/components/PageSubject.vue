@@ -1,4 +1,5 @@
 <template>
+    <div>
     <foodcategory :title="title" class="title" v-if="title && !emptyValue">
     <template #iconfont v-if="isRankingList">
         <i class="iconfont" 
@@ -6,6 +7,7 @@
         ></i>
     </template>
     </foodcategory>
+    </div>
     <div class="container-food" v-loading="loading">
         <foodCard 
         v-for="food in foodData"

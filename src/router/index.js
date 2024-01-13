@@ -4,6 +4,11 @@ const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
+            path:'/login',
+            name:'login',
+            component:()=>import ('@/views/LoginPage/LoginPage.vue'),
+        },
+        {
             path:'/',
             redirect:'/sy',
             component:()=>import ('@/views/layout/layoutPage.vue'),

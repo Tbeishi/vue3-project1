@@ -53,7 +53,7 @@
           <el-dropdown-menu>
             <el-dropdown-item :icon="Message" command="profile">基本资料</el-dropdown-item>
             <el-dropdown-item :icon="PictureFilled" command="avatar">更换头像</el-dropdown-item>
-            <el-dropdown-item :icon="SwitchButton">去登录</el-dropdown-item>
+            <el-dropdown-item :icon="SwitchButton" command="layout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
         </el-dropdown> 
@@ -100,6 +100,7 @@ const cartcount = computed(()=>{
 })
 
 const SearchMethod = ()=>{
+    if(SearchValue.value)
     router.push({path:`/search/${SearchValue.value}`})
 }
 </script>
