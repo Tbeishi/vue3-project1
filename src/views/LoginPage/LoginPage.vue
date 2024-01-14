@@ -170,8 +170,9 @@ const dologin = ()=>{
            const {status,message,data,token} = res.data
            ElMessage({ type: status === 1 ? 'error':'success', message:message})
            if(status === 0) {
-            // usestore.setLogindata(data)
-            // usestore.setToken(token)
+            UserStore.setUserData(data)
+            UserStore.setToken(token)
+            UserStore.avaterURL = '/src/assets/picture/default.jpg'
             router.replace({path:'/sy'})}
         }
     })

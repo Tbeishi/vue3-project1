@@ -7,7 +7,7 @@
     align-center
     center
   >
-        <ul>
+        <ul v-if="UserStore.addressList.length">
             <el-scrollbar height="400px">
             <li v-for="item in chooseList" 
             :key="item" 
@@ -23,10 +23,11 @@
             </li>
         </el-scrollbar>
         </ul>
+      <el-empty v-else description="暂时没有添加收货地址" />
 
         <template #footer>
       <span class="dialog-footer">
-        <el-button >取消</el-button>
+        <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="changeAddress">
           确认
         </el-button>
@@ -52,10 +53,12 @@ const openDialog = ()=>{
 }
 
 const changeAddress = ()=>{
+  if(currentAddress.value){
     currentAddress.value.default = false
     activeAddress.value.default = true
     currentAddress.value = activeAddress.value
-    dialogVisible.value = false
+  }
+  dialogVisible.value = false
 }
 
 defineExpose({

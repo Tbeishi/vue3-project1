@@ -2,9 +2,9 @@
     <div class="mydataPage">
         <div class="container-header">
             <div class="avater">
-                <img :src=imageUrl class="img">
+                <img :src=UserStore.avaterURL class="img">
                 <div>
-                <p class="username">小米露</p>
+                <p class="username">{{ UserStore.userData.username }}</p>
                 <p class="vip">VIP会员</p>
                 </div>
             </div>
@@ -19,13 +19,11 @@
         <mydataSubject/>
         <div>
                 <el-upload 
-                    action="#" 
-                    :on-change="handleChange"
                     :before-upload="beforeUpload"
                     class="upload"
                     >
                     <el-button type="primary" size="small">更换头像</el-button>
-                    </el-upload>
+                </el-upload>
         </div>
     </div>
 </template>
@@ -35,7 +33,8 @@ import { ref } from "vue";
 import { ElMessage } from 'element-plus'
 import mydataSubject from './components/mydataSubject.vue'
 import dialog from "./components/dialog.vue";
-const imageUrl = ref('/src/assets/picture/default.jpg')
+import { useUserStore } from '@/store/user';
+const UserStore = useUserStore()
 const dialogRef = ref()
 const beforeUpload = (file) => {
       const isImage = file.type.startsWith('image/');
@@ -47,15 +46,10 @@ const beforeUpload = (file) => {
         ElMessage.error('图片大小不能超过2MB!')
         return false
       }
+      UserStore.avaterURL = URL.createObjectURL(file);
       ElMessage.success('更换头像成功!')
       return isImage;
     };
-
-const handleChange = (file) => {
-      if (file.raw) {
-        imageUrl.value = URL.createObjectURL(file.raw);
-    }
-}
 
 const addMoney = ()=>{
     dialogRef.value.open()

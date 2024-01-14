@@ -15,7 +15,7 @@
             <el-icon><user /></el-icon>用户名
             </div>
         </template>
-        小米露
+        {{ UserStore.userData.username }}
     </el-descriptions-item>
     <el-descriptions-item>
         <template #label>
@@ -23,7 +23,7 @@
             <el-icon><iphone /></el-icon>手机号码
             </div>
         </template>
-        18100000000
+        无 
     </el-descriptions-item>
     <el-descriptions-item>
         <template #label>
@@ -31,7 +31,7 @@
             <el-icon><location /></el-icon>位置
             </div>
         </template>
-        中国
+        无 
     </el-descriptions-item>
         <el-descriptions-item>
         <template #label>
@@ -42,7 +42,7 @@
            收货地址
             </div>
         </template>
-        No.1188
+         无 
         </el-descriptions-item>
         <el-descriptions-item>
         <template #label>
@@ -53,7 +53,7 @@
            邮箱
             </div>
         </template>
-        123@1.c
+        {{ UserStore.userData.email }}
         </el-descriptions-item>
     </el-descriptions>
     </div>
@@ -61,4 +61,6 @@
 
 <script setup>
 import {Iphone,Location,OfficeBuilding,User,Message} from '@element-plus/icons-vue'
+import { useUserStore } from '@/store/user';
+const UserStore = useUserStore()
 </script>

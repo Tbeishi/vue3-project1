@@ -41,19 +41,29 @@
             <div>
                 我的订单
             </div>
-            <div class="toLogin" @click="$router.push('/login')">
+            <div class="toLogin" v-if="!UserStore.userData.username" @click="$router.push('/login')">
                 去登录
             </div>
-            <el-dropdown placement="bottom-end">  
+            <el-dropdown 
+            placement="bottom-end"
+            @command ="commandHandle"
+            >  
           <span class="dropdown__box"> 
-            <el-avatar :src="defaultAvatar" :size="30"/>
+            <el-avatar :src="UserStore.avaterURL" :size="30"/>
             <el-icon><CaretBottom /></el-icon>
           </span>
           <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item :icon="Message" command="profile">基本资料</el-dropdown-item>
-            <el-dropdown-item :icon="PictureFilled" command="avatar">更换头像</el-dropdown-item>
-            <el-dropdown-item :icon="SwitchButton" command="layout" @click="$router.push('/login')">退出登录</el-dropdown-item>
+            <el-dropdown-item :icon="Message" command="/member/mydata">个人资料</el-dropdown-item>
+            <el-dropdown-item :icon="PictureFilled">
+                <el-upload 
+                    :before-upload="beforeUpload"
+                    class="upload"
+                    >
+                    更换头像
+                </el-upload>
+            </el-dropdown-item>
+            <el-dropdown-item :icon="SwitchButton" command="layout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
         </el-dropdown> 
@@ -72,6 +82,9 @@ import defaultAvatar from '@/assets/picture/默认头像.jpg'
 import { Search,CaretBottom,Message,PictureFilled,SwitchButton } from '@element-plus/icons-vue'
 import { useRouter,useRoute } from 'vue-router'
 import { useCartStore } from '@/store/cart'
+import { useUserStore } from '@/store/user';
+import { ElMessage } from 'element-plus'
+
 const router = useRouter()
 import { useScroll } from '@vueuse/core'
 const scroll = ref(null)
@@ -79,6 +92,7 @@ const CartStore = useCartStore()
 const CartRef = ref()
 const membersChild = ref()
 const SearchValue = ref()
+const UserStore = useUserStore()
 const getScrollY = ()=>{
     const { y } = useScroll(scroll);
     watch(y,(newVal)=>{
@@ -99,9 +113,36 @@ const cartcount = computed(()=>{
     return CartStore.Cartdata.reduce((pre,cur)=>pre + cur.count,0)
 })
 
+const beforeUpload = (file) => {
+      const isImage = file.type.startsWith('image/');
+      if (!isImage) {
+        ElMessage.error('只能上传图片!')
+         return false
+      }
+      if(file.size / 1024 / 1024 > 2) {
+        ElMessage.error('图片大小不能超过2MB!')
+        return false
+      }
+      UserStore.avaterURL = URL.createObjectURL(file);
+      ElMessage.success('更换头像成功!')
+      return isImage;
+};
+
 const SearchMethod = ()=>{
     if(SearchValue.value)
     router.push({path:`/search/${SearchValue.value}`})
+}
+
+const commandHandle = (command)=>{
+    if(command === 'layout'){
+        UserStore.setUserData = {}
+        UserStore.setToken = ''
+        UserStore.addressList = []
+        router.push('/login')
+    }
+    else{
+        router.push(command)
+    }
 }
 </script>
 
@@ -161,8 +202,8 @@ const SearchMethod = ()=>{
            
         }
         .toLogin{
+            margin-left: 30px;
             cursor: pointer;
-            margin: 0 30px;
         }
     }
 }
@@ -205,6 +246,7 @@ const SearchMethod = ()=>{
 .dropdown__box{
     display: flex;
     align-items: center;
+    margin-left: 30px;
     &:focus{
     outline: none;
 }
@@ -212,6 +254,12 @@ const SearchMethod = ()=>{
     color: #999;
     margin-left: 10px;
   }
+}
+
+.upload{
+    margin: 0;
+    padding: 0;
+    height: 24px;
 }
 
 @keyframes cartScale {
