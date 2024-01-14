@@ -138,6 +138,7 @@ const SearchMethod = ()=>{
             align-items: center;
             margin-right: 30px;
             position: relative;
+            cursor: pointer;
             .iconfont{
                 font-size: 20px;
             }
@@ -160,6 +161,7 @@ const SearchMethod = ()=>{
            
         }
         .toLogin{
+            cursor: pointer;
             margin: 0 30px;
         }
     }

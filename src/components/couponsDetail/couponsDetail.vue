@@ -3,6 +3,8 @@
     <el-drawer v-model="drawer" 
     size="500" 
     close-on-press-escape
+    @close="closeDrawer"
+    @open="open"
     >
     <template #header>
       <h3>选择优惠券</h3>
@@ -59,10 +61,12 @@
 <script setup>
 import { computed, ref,watch } from 'vue'
 import { useCouponsStore } from '@/store/coupons'
+
 const CouponsStore = useCouponsStore()
 const drawer = ref(false)
 const lastClick = ref(0)
 const chooseIndex = ref(0)
+const flag = ref(false)
 const CouponsLength = ref(CouponsStore.usefulCouponList ? CouponsStore.usefulCouponList.length : 0)
 const openDrawer = ()=>{
     drawer.value= true
@@ -70,10 +74,14 @@ const openDrawer = ()=>{
 
 //处理优惠卷选中框
 const handleChecked = (index)=>{
+    console.log('lastClick === ' + lastClick.value);
+    console.log('index === ' + index);
+    console.log(flag.value);
     //可用优惠卷发生变化，最后一次选中优惠卷下标改为0，并记录当前可用优惠卷长度
-    if(CouponsLength.value !== CouponsStore.usefulCouponList.length){
+    if(CouponsLength.value !== CouponsStore.usefulCouponList.length || flag.value){
         lastClick.value = 0
         CouponsLength.value = CouponsStore.usefulCouponList.length
+        flag.value = false
     }
     if(lastClick.value === index && !CouponsStore.usefulCouponList[index].isChecked) {
         CouponsStore.usefulCouponList[index].isChecked
@@ -82,13 +90,14 @@ const handleChecked = (index)=>{
     }
     
     else{
+        console.log(lastClick.value);
+        console.log(index);
         CouponsStore.usefulCouponList[lastClick.value].isChecked = false
         CouponsStore.usefulCouponList[index].isChecked = true
+        console.log(CouponsStore.usefulCouponList);
         lastClick.value = index
         chooseIndex.value = index
     }
-    // console.log('lastClick === ' + lastClick.value);
-    // console.log('index === ' + index);
 }
 
 const CouponPay = computed(()=>{
@@ -113,10 +122,28 @@ const Couponcount =  computed(()=>{
     return 0
 })
 
-const post = ()=>{
-    console.log(chooseIndex.value);
+const closeDrawer = ()=>{
+    if(flag.value) {
+        lastClick.value = 0
+        chooseIndex.value = 0
+    }
     emit('revisePay',chooseIndex.value)
+}
+
+const post = ()=>{
     drawer.value= false
+}
+
+const open = ()=>{
+    console.log('lastClick === ' + lastClick.value);
+    console.log('chooseIndex === ' + chooseIndex.value);
+    if(CouponsStore.oldconponsList.length === CouponsStore.conponsList.length){
+            CouponsStore.oldconponsList.forEach((item,index)=>{
+            if(item.id !== CouponsStore.conponsList[index].id || item.coupon !== CouponsStore.conponsList[index].coupon)
+             flag.value = true
+        })
+    }
+    console.log(flag.value);
 }
 
 defineExpose({
@@ -126,10 +153,10 @@ defineExpose({
 const emit = defineEmits(['revisePay'])
 
 const props = defineProps({
-    allPay:{
-        type:Number,
-    }
+    allPay:Number,
+    flag:Boolean,
 })
+
 </script>
 
 <style lang="less" scoped>

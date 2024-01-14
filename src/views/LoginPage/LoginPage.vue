@@ -155,6 +155,9 @@ const doregister = ()=>{
            console.log(res);
            const {status,message} = res.data
            ElMessage({ type: status === 1 ? 'error':'success', message:message})
+           if(status === 0) {
+            moveValue.value = !moveValue.value
+        }
         }
     })
 }

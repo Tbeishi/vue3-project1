@@ -94,9 +94,9 @@
         <span class="selected" v-show="selectedCount > 0">已选 {{ selectedCount }} 件,</span>
         合计:<span class="pay"><i>¥</i>{{ allPay - coupons === 0 ? allPay - coupons : (allPay-coupons).toFixed(2) }}</span>
       </p>
-      <p class="prefer" v-show="coupons !== 0 ">
-        <span>共减<i>¥</i>{{ coupons }}元</span>
-        <span class="detail" @click="openDrawer">查看明细<i class="iconfont icon-xiangshangjiantou"></i></span>
+      <p class="prefer" >
+        <span v-show="coupons !== 0">共减<i>¥</i>{{ coupons }}元</span>
+        <span v-show="allPay !== 0" class="detail" @click="openDrawer">查看明细<i class="iconfont icon-xiangshangjiantou"></i></span>
       </p>
     </div>
     <div><el-button type="success" round size="large" @click="open">结算</el-button></div>
@@ -107,6 +107,7 @@
       ref="drawer" 
       :allPay ="allPay" 
       @revisePay="revisePay"
+      :flag="childrenflag"
   />
 </div>
 </template>
@@ -132,6 +133,8 @@ const conponsLise = ref([])
 const drawer = ref()
 const reviseIndex  = ref(0)
 const conponLength = ref(0)
+const oldConpons = ref([])
+const flag = ref(false)
 const openDrawer = ()=>{
 drawer.value.openDrawer()
 }
@@ -202,6 +205,12 @@ const checkAll = ()=>{
 //计算优惠金额
 const coupons = computed(()=>{
   if(!CouponsStore.couponsList || selectedCount.value === 0) return 0
+  CouponsStore.oldconponsList = []
+  conponsLise.value.forEach(item => {
+    let arr = Object.assign({},item)
+    CouponsStore.oldconponsList.push(arr)
+  }
+  )
   CouponsStore.couponsList.forEach((item)=>{
     if(item.CouponType === 1){
       noThreshold(item)
@@ -223,9 +232,16 @@ const coupons = computed(()=>{
       item.Isvalue = true
     }
   })
+  CouponsStore.conponsList = conponsLise.value
   const IsvalueArr = CouponsStore.couponsList.filter(item => item.Isvalue === true)
   const NovalueArr = CouponsStore.couponsList.filter(item => item.Isvalue !== true)
   IsvalueArr.sort(sortRule)
+  if(CouponsStore.oldconponsList.length === conponsLise.value.length){
+    CouponsStore.oldconponsList.forEach((item,index)=>{
+    if(item.id !== conponsLise.value[index].id ||  item.coupon !== conponsLise.value[index].coupon)
+     flag.value = true
+  })
+  }
   if(IsvalueArr.length > 0){
     IsvalueArr.forEach((item)=>item.isMaxCoupon = false)
     IsvalueArr[0].isMaxCoupon = true
@@ -234,19 +250,24 @@ const coupons = computed(()=>{
     CouponsStore.usefulCouponList = IsvalueArr
     if(reviseIndex.value === -1) { 
       reviseIndex.value = 0 
+      IsvalueArr[0].isChecked
       return 0
     }
     else {
-      if(conponLength.value !== IsvalueArr.length){
+      if(conponLength.value !== IsvalueArr.length || flag.value){
+        // IsvalueArr[reviseIndex.value].isChecked = false
         IsvalueArr[0].isChecked = true
         reviseIndex.value = 0
         CouponsStore.curConpons = IsvalueArr[0] 
         conponLength.value = IsvalueArr.length
+        flag.value = false
       }
+      // console.log('reviseIndex----',reviseIndex.value);
       CouponsStore.curConpons = IsvalueArr[reviseIndex.value] 
       CouponsStore.curConpons.isChecked = true
     }
     const curId = CouponsStore.curConpons.id
+    // console.log('curId----',curId);
     const res = conponsLise.value.find((item)=>item.id === curId).coupon
     CouponsStore.ConponsPay = res
     return res
@@ -255,7 +276,7 @@ const coupons = computed(()=>{
 })
 
 function sortRule(a,b) {
-    return b.CouponPrice - a.CouponPrice;
+    return findCouponId(b.id).coupon - findCouponId(a.id).coupon;
 }
 
 //计算无门槛优惠
@@ -306,7 +327,6 @@ const instantReduction = (item)=>{
 }
 
 const findCouponId = (id)=>{
-  // console.log(conponsLise.value.find(item=>item.id === id) );
   return conponsLise.value.find(item=>item.id === id) 
 }
 
@@ -360,6 +380,7 @@ const selectedCount = computed(()=>{
 const revisePay = (value)=>{
   reviseIndex.value = value
 }
+
 </script>
 
 <style lang="less" scoped>

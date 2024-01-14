@@ -4,7 +4,6 @@ import { useUserStore } from '../store/user'
 const quest = axios.create({
     baseURL: 'http://127.0.0.1:8080/',
     timeout: 5000,
-    // headers: {'X-Custom-Header': 'foobar','Content-Type': 'application/json'}
   });
 
   // 添加请求拦截器
