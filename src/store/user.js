@@ -5,6 +5,7 @@ export const useUserStore =  defineStore('user',()=>{
     const addressList = ref([])
     const userData = ref({})
     const token = ref()
+    const recharge = ref(0)
     const avaterURL = ref('/src/assets/picture/default.jpg')
     const setUserData = (data)=>{
         userData.value = data
@@ -16,6 +17,7 @@ export const useUserStore =  defineStore('user',()=>{
         addressList,
         userData,
         avaterURL,
+        recharge,
         setUserData,
         setToken
     }

@@ -33,4 +33,16 @@ a{
       text-decoration: none;
       color: red;
 }
+
+.loading{
+    position: relative;
+    background-color: #ff0000;
+    height: 200px;
+    width: 100px;
+}
+
+.el-loading-mask.is-fullscreen {
+    position: absolute;
+    top:0
+}
   

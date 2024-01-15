@@ -1,6 +1,11 @@
 <template>
-    <div class="loginPage">
-        <div class="left" :class="{'active':moveValue}">
+    <div class="loginPage" >
+        <div class="loading-overlay" v-if="loading"></div>
+        <div class="left" 
+        :class="{'active':moveValue}" 
+        v-loading="loading" :element-loading-text="moveValue ? '登录中...' : '正在注册中...'"
+        fullscreen="true"
+        >
             <p class="title">{{ moveValue ? '登录账户' : '创建账户' }}</p>
 
             <div class="form">
@@ -113,6 +118,7 @@ import { Register } from '@/apis/register'
 import { Avatar,Lock,Message } from '@element-plus/icons-vue'
 const UserStore = useUserStore()
 const moveValue = ref(true)
+const loading = ref(false)
 
 //准备表单对象
 const refForm = ref({
@@ -151,8 +157,9 @@ const doregister = ()=>{
     const {username, email, password} = refForm.value
     Registerform.value.validate(async(valid)=>{
         if(valid){
+           loading.value = true
            const res = await Register({username,email,password})
-           console.log(res);
+           loading.value = false
            const {status,message} = res.data
            ElMessage({ type: status === 1 ? 'error':'success', message:message})
            if(status === 0) {
@@ -166,7 +173,9 @@ const dologin = ()=>{
     const {username, password} = refForm.value
     Loginform.value.validate(async(valid)=>{
         if(valid){
+           loading.value = true
            const res = await Login({username,password})
+           loading.value = false
            const {status,message,data,token} = res.data
            ElMessage({ type: status === 1 ? 'error':'success', message:message})
            if(status === 0) {
@@ -316,4 +325,13 @@ const handle = ()=>{
     color: rgb(255, 255, 255);
 }
 
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0); 
+  z-index: 999; 
+}
 </style>

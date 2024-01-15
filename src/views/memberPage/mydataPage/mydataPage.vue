@@ -10,9 +10,8 @@
             </div>
             <div class="account">
                 <span class="recharge" @click="addMoney">会员充值</span>
-                <dialog ref="dialogRef"></dialog>
                 <p>账户余额:</p>
-                <sapn class="accountNumber"><i>¥</i>520</sapn>
+                <sapn class="accountNumber"><i>¥</i>{{ UserStore.recharge }}</sapn>
             </div>
         </div>
 
@@ -25,14 +24,16 @@
                     <el-button type="primary" size="small">更换头像</el-button>
                 </el-upload>
         </div>
+        <AddDialog ref="dialogRef"></AddDialog>
+
     </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { ElMessage } from 'element-plus'
 import mydataSubject from './components/mydataSubject.vue'
-import dialog from "./components/dialog.vue";
+import AddDialog from "./components/AddDialog.vue";
 import { useUserStore } from '@/store/user';
 const UserStore = useUserStore()
 const dialogRef = ref()

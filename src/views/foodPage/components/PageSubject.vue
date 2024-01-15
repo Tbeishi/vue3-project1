@@ -8,7 +8,7 @@
     </template>
     </foodcategory>
     </div>
-    <div class="container-food" v-loading="loading">
+    <div class="container-food">
         <foodCard 
         v-for="food in foodData"
         :key="food.categoryId"
