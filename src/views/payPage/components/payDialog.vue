@@ -63,7 +63,6 @@ import { useCouponsStore } from '@/store/coupons.js'
 import PaySuccess from './PaySuccess.vue'
 import PayError from './PayError.vue'
 import { useRouter } from "vue-router";
-
 const UserStore = useUserStore()
 const CouponsStore = useCouponsStore()
 const dialogVisible = ref(false)
