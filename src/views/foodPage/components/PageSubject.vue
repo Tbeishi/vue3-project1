@@ -67,12 +67,13 @@ import { useRoute,useRouter } from 'vue-router';
 import getData from '../../homePage/foodData'
 import foodcategory from '@/components/foodcategory/foodcategory.vue'
 import { useCartStore } from '@/store/cart'
+import { useUserStore } from '@/store/user'
+const UserStore = useUserStore()
 const router = useRouter()
 const  CartStore  = useCartStore()
 const allData = ref()
 const foodData = ref()
 const route = useRoute()
-const loading = ref(false)
 const emptyValue = ref(false)
 const title = ref('')
 const curFood = ref()
@@ -194,12 +195,15 @@ const afterEnter = (el)=>{
     el.style.opacity = 1;
 }
   const addFood = (event,item)=>{
+    if(!UserStore.token) router.push('/login')
+    else{
     item.count ++ 
     if(item.count === 1)item.Ischecked = true
     elLeft.value = event.clientX;
     elTop.value = event.clientY;
     showBall.value.push('true')
     curFood.value = item
+    }
   }
 
   const reduceFood = (item)=>{

@@ -63,6 +63,10 @@
 import { ref,toRefs } from 'vue';
 import { usefoodDetail } from '@/store/foodDetail'
 import { useCartStore } from '@/store/cart'
+import { useUserStore } from '@/store/user'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const UserStore = useUserStore()
 const { selectedFood } = toRefs(usefoodDetail())
 const  CartStore  = useCartStore()
 const buyCount = ref(0)
@@ -89,10 +93,13 @@ const handle = (item,index)=>{
 }
 
 const addCart = ()=>{
+    if(!UserStore.token) router.push('/login')
+    else{
     showBall.value.push('true')
     // console.log(curFood.value);
     elLeft.value = itemRefsList.value[curIndex.value].getBoundingClientRect().left
     elTop.value = itemRefsList.value[curIndex.value].getBoundingClientRect().top
+    }
 }
 
 // 购物车添加商品数据的方法

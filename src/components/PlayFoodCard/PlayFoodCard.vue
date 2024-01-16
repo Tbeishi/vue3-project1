@@ -44,8 +44,12 @@
 
 <script setup>
 import { useCartStore } from '@/store/cart'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import foodCard from '@/components/foodCard/foodCard.vue'
+import { useUserStore } from '@/store/user'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const UserStore = useUserStore()
 const props = defineProps({
     foodData:{
         type:Object
@@ -78,12 +82,15 @@ const afterEnter = (el)=>{
     el.style.opacity = 1;
 }
   const addFood = (event,item)=>{
-    item.count ++ 
-    if(item.count === 1)item.Ischecked = true
-    elLeft.value = event.clientX;
-    elTop.value = event.clientY;
-    showBall.value.push('true')
-    curFood.value = item
+    if(!UserStore.token) router.push('/login')
+    else{
+        item.count ++ 
+        if(item.count === 1)item.Ischecked = true
+        elLeft.value = event.clientX;
+        elTop.value = event.clientY;
+        showBall.value.push('true')
+        curFood.value = item
+    }
   }
 
   const reduceFood = (item)=>{

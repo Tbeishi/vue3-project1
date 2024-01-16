@@ -62,6 +62,10 @@ import radiusCard from '@/components/radiusCard/radiusCard.vue'
 import foodCard from '@/components/foodCard/foodCard.vue';
 import getCardData from './cardData'
 import { useCartStore } from '@/store/cart'
+import { useUserStore } from '@/store/user'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const UserStore = useUserStore()
 const CartStore = useCartStore()
 const curFood = ref()
 onMounted(()=>{
@@ -107,12 +111,15 @@ const afterEnter = (el)=>{
 }
 
 const addFood = (event,item)=>{
+    if(!UserStore.token) router.push('/login')
+    else{
     item.count ++ 
     if(item.count === 1)item.Ischecked = true
     elLeft.value = event.clientX;
     elTop.value = event.clientY;
     showBall.value.push('true')
     curFood.value = item
+    }
   }
 
   const reduceFood = (item)=>{
