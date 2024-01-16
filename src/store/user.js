@@ -4,7 +4,7 @@ import { ref } from 'vue'
 export const useUserStore =  defineStore('user',()=>{
     const addressList = ref([])
     const userData = ref({})
-    const token = ref()
+    const token = ref('')
     const recharge = ref(0)
     const avaterURL = ref('/src/assets/picture/default.jpg')
     const setUserData = (data)=>{
@@ -17,6 +17,7 @@ export const useUserStore =  defineStore('user',()=>{
         addressList,
         userData,
         avaterURL,
+        token,
         recharge,
         setUserData,
         setToken

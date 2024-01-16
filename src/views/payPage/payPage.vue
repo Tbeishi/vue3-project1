@@ -75,7 +75,7 @@
                 <p>商品件数：<span>{{ allCount }}件</span></p>
                 <p>商品总价：<span><i>¥</i>{{ allPay }}</span></p>
                 <p v-if="CouponsStore.ConponsPay">优惠：<span class="reduce">减<i>¥</i>{{ CouponsStore.ConponsPay }}</span></p>
-                <p>合计：<span class="allPay"><i>¥</i><span class="payCount">{{ needPay }}</span></span></p>
+                <p>合计：<span class="allPay"><i>¥</i><span class="payCount">{{ needPay.toFixed(2) }}</span></span></p>
             </div>
             <el-button type="success" class="postBtn" size="large">提交订单</el-button>
         </div>

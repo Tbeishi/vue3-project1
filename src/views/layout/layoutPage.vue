@@ -135,8 +135,8 @@ const SearchMethod = ()=>{
 
 const commandHandle = (command)=>{
     if(command === 'layout'){
-        UserStore.setUserData = {}
-        UserStore.setToken = ''
+        UserStore.setUserData({})
+        UserStore.setToken('')
         UserStore.addressList = []
         router.push('/login')
     }
