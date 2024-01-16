@@ -68,7 +68,7 @@ const router = createRouter({
                 {
                     path:'/pay',
                     name:'pay',
-                    component:()=>import ('@/views/payPage/payPage.vue')
+                    component:()=>import ('@/views/payPage/payPage.vue'),
                 },
                 {
                     path:'/search/:searchData',
@@ -87,7 +87,16 @@ router.beforeEach((to,from,next)=>{
         next()
     }
    else{
-    userStore.token ? next() : next('/login')
+    if(!userStore.token) next('/login')
+    else{
+        console.log(to.path,from.path);
+
+        if(to.path === '/pay' && from.path !== '/mycart') router.back(-1)
+        else {
+            next()
+            console.log(to.path,from.path);
+        }
+    }
    }
 })
 export default router

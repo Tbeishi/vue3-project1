@@ -48,7 +48,7 @@
             </el-table-column>
                 <el-table-column label="合计" >
                 <template #default="{row}">
-                    <span class="cost"><i>¥</i>{{ row.price*row.count }}</span>
+                    <span class="cost"><i>¥</i>{{ (row.price*row.count).toFixed(2) }}</span>
                 </template>
             </el-table-column>
             </el-table>
@@ -73,8 +73,8 @@
             <h4>支付明细</h4>
             <div>
                 <p>商品件数：<span>{{ allCount }}件</span></p>
-                <p>商品总价：<span><i>¥</i>{{ allPay }}</span></p>
-                <p v-if="CouponsStore.ConponsPay">优惠：<span class="reduce">减<i>¥</i>{{ CouponsStore.ConponsPay }}</span></p>
+                <p>商品总价：<span><i>¥</i>{{ allPay.toFixed(2) }}</span></p>
+                <p v-if="CouponsStore.ConponsPay">优惠：<span class="reduce">减<i>¥</i>{{ CouponsStore.ConponsPay.toFixed(2) }}</span></p>
                 <p>合计：<span class="allPay"><i>¥</i><span class="payCount">{{ needPay.toFixed(2) }}</span></span></p>
             </div>
             <el-button type="success" class="postBtn" size="large">提交订单</el-button>
@@ -95,6 +95,7 @@ const CouponsStore = useCouponsStore()
 const AddressDialog = ref()
 const ChooseDialog = ref()
 const address = ref({})
+
 const allPay = computed(()=>{
     return CartStore.payList.reduce((pre,cur)=>pre + cur.count * cur.price,0)
 })
