@@ -126,17 +126,19 @@ const arr = []
 getData().forEach((item)=>{
     item.category.forEach((category)=>{
         category.foodName = item.foodName
+        if(!UserStore.token) arr.push(category)
+        else{
         const cartItem = CartStore.cartNameList.indexOf(category.categoryId)
         if(cartItem != -1) {
             category.count = CartStore.Cartdata[cartItem].count
             category.Isactive = true
         };
         arr.push(category)
+        }
     })
 })
 arr.sort(sortRules('sellCount'))
 allData.value = arr
-console.log(arr);
 foodData.value = arr
 router.push({path:'/food'})
 })

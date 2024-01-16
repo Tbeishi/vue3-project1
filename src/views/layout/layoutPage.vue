@@ -30,9 +30,9 @@
                 <div :class="{'playAnimation': CartStore.CartMessage.playStart}">
                 <i class="iconfont icon-gouwuchekong"></i>
                 <div class="count" 
-                v-show="cartcount > 0" 
+                v-show="UserStore.token && cartcount > 0" 
                 :class="{'playAnimation': CartStore.CartMessage.playCount}"
-                >{{ cartcount }}</div>
+                >{{ UserStore.token ? cartcount : 0 }}</div>
                 </div>
                 <div class="cart">
                     <span>购物车</span>

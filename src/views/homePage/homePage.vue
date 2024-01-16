@@ -69,6 +69,8 @@ const UserStore = useUserStore()
 const CartStore = useCartStore()
 const curFood = ref()
 onMounted(()=>{
+if(!UserStore.token) foodData.value = getData()
+else{
 const arr = []
 getData().forEach((item)=>{
     item.category.forEach((category)=>{
@@ -82,6 +84,7 @@ getData().forEach((item)=>{
     arr.push(item)
 })
 foodData.value = arr
+}
 cardData.value = getCardData()
 })
 const elLeft = ref(0) //记录所点击商品加购图标到页面左边距离

@@ -95,7 +95,7 @@
         合计:<span class="pay"><i>¥</i>{{ allPay - coupons === 0 ? allPay - coupons : (allPay-coupons).toFixed(2) }}</span>
       </p>
       <p class="prefer" >
-        <span v-show="coupons !== 0">共减<i>¥</i>{{ coupons.toFixed(2) }}元</span>
+        <span v-show="coupons !== 0">共减<i>¥</i>{{ coupons }}元</span>
         <span v-show="allPay !== 0" class="detail" @click="openDrawer">查看明细<i class="iconfont icon-xiangshangjiantou"></i></span>
       </p>
     </div>

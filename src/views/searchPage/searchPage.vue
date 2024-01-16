@@ -31,6 +31,8 @@ import { useRoute } from 'vue-router'
 import getData from '../homePage/foodData'
 import PlayFoodCard from '@/components/PlayFoodCard/PlayFoodCard.vue'
 import { useCartStore } from '@/store/cart'
+import { useUserStore } from '@/store/user'
+const UserStore = useUserStore()
 const  CartStore  = useCartStore()
 const route = useRoute()
 const foodData = ref([])
@@ -47,6 +49,8 @@ const getSearchData = (search)=>{
     const arr = getData().filter(item=>item.foodName.includes(search))
     arr.forEach((item)=>{
         item.category.forEach((food)=>{
+            if(!UserStore.token)  res.push(food)
+            else{
             const id = CartStore.cartNameList.indexOf(food.categoryId)
             if(id!==-1){
                 food.count = CartStore.Cartdata[id].count
@@ -54,12 +58,15 @@ const getSearchData = (search)=>{
             }
             food.foodName = item.foodName
             res.push(food)
+            }
         })
     })
     foodData.value = res
     const temp = []
     getData().forEach((item)=>{
         item.category.forEach((food)=>{
+            if(!UserStore.token)  temp.push(food)
+            else{
             const id = CartStore.cartNameList.indexOf(food.categoryId)
             if(id!==-1){
                 food.count = CartStore.Cartdata[id].count
@@ -67,6 +74,7 @@ const getSearchData = (search)=>{
             }
             food.foodName = item.foodName
             temp.push(food)
+            }
         })
     })
     foodLikeData.value = temp
