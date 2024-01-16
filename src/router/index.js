@@ -1,5 +1,5 @@
 import { createWebHistory,createRouter } from 'vue-router'
-const authUrls = ['/member','/pay','/mycart']
+const authUrls = ['/member/mydata','/pay','/mycart','/member/discount','/member/order']
 import { useUserStore } from '@/store/user';
 
 const router = createRouter({
@@ -75,6 +75,11 @@ const router = createRouter({
                     name:'search',
                     component:()=>import ('@/views/searchPage/searchPage.vue')
                 },
+                {
+                    path:'/order',
+                    name:'order',
+                    component:()=>import ('@/views/orderPage/orderPage.vue')
+                },
             ]
         },
        
@@ -89,12 +94,9 @@ router.beforeEach((to,from,next)=>{
    else{
     if(!userStore.token) next('/login')
     else{
-        console.log(to.path,from.path);
-
         if(to.path === '/pay' && from.path !== '/mycart') router.back(-1)
         else {
             next()
-            console.log(to.path,from.path);
         }
     }
    }

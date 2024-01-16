@@ -7,8 +7,17 @@
     :border="true"
   >
     <template #extra>
-      <el-button type="primary">编辑</el-button>
+      <el-button type="primary" @click="openDrawer">编辑个人信息</el-button>
+      <dataDrawer ref="Drawer"/>
     </template>
+    <el-descriptions-item>
+        <template #label>
+            <div class="cell-item">
+            <el-icon><user /></el-icon>UID
+            </div>
+        </template>
+        {{ UserStore.userData.UID }}
+    </el-descriptions-item>
     <el-descriptions-item>
         <template #label>
             <div class="cell-item">
@@ -62,5 +71,19 @@
 <script setup>
 import {Iphone,Location,OfficeBuilding,User,Message} from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/user';
+import { ref } from 'vue'
+import dataDrawer from './dataDrawer.vue'
 const UserStore = useUserStore()
+const Drawer = ref()
+const openDrawer = ()=>{
+    Drawer.value.openDrawer()
+}
 </script>
+
+<style scoped lang="less">
+.el-icon{
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+</style>

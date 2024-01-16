@@ -2,25 +2,43 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useUserStore =  defineStore('user',()=>{
-    const addressList = ref([])
-    const userData = ref({})
+    const userData = ref({
+        UID:0,
+        username:'',
+        phone:'',
+        address:'',
+        avatar:'/src/assets/picture/default.jpg',
+        addressList:[],
+        recharge:0,
+        allRecharge:0,
+    })
     const token = ref('')
-    const recharge = ref(0)
-    const avaterURL = ref('/src/assets/picture/default.jpg')
-    const setUserData = (data)=>{
-        userData.value = data
+    const setData = (data)=>{
+        const { id,username,email } = data
+        userData.value.UID = id
+        userData.value.username = username
+        userData.value.email = email
     }
     const setToken = (Token)=>{
         token.value = Token
     }
+    const clearData = ()=>{
+        userData.value = {
+            UID:'',
+            username:'',
+            phone:'',
+            address:'',
+            avatar:'/src/assets/picture/default.jpg',
+            addressList:[],
+            recharge:0,
+        }
+    }
     return {
-        addressList,
         userData,
-        avaterURL,
         token,
-        recharge,
-        setUserData,
-        setToken
+        setData,
+        setToken,
+        clearData
     }
 },{
     persist:true,

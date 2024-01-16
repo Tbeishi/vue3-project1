@@ -73,9 +73,9 @@ const addAddress = ()=>{
     formRef.value.validate((valid)=>{
         if(valid){
             formData.value.default = true
-            const pre = UserStore.addressList.find(item => item.default === true)
+            const pre = UserStore.userData.addressList.find(item => item.default === true)
             if(pre !== undefined) pre.default = false
-            UserStore.addressList.unshift(formData.value)
+            UserStore.userData.addressList.unshift(formData.value)
             formData.value = {}
             dialogVisible.value = false
         }

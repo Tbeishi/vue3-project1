@@ -135,15 +135,14 @@ const post = ()=>{
 }
 
 const open = ()=>{
-    console.log('lastClick === ' + lastClick.value);
-    console.log('chooseIndex === ' + chooseIndex.value);
+    // console.log('lastClick === ' + lastClick.value);
+    // console.log('chooseIndex === ' + chooseIndex.value);
     if(CouponsStore.oldconponsList.length === CouponsStore.conponsList.length){
             CouponsStore.oldconponsList.forEach((item,index)=>{
             if(item.id !== CouponsStore.conponsList[index].id || item.coupon !== CouponsStore.conponsList[index].coupon)
              flag.value = true
         })
     }
-    console.log(flag.value);
 }
 
 defineExpose({

@@ -2,28 +2,32 @@
     <div class="mydataPage">
         <div class="container-header">
             <div class="avater">
-                <img :src=UserStore.avaterURL class="img">
+                <el-tooltip
+                    content="更换头像"
+                    placement="top"
+                    effect="light"
+                >
+                <el-upload 
+                    :before-upload="beforeUpload"
+                    class="upload"
+                    >
+                    <img :src="UserStore.userData.avatar" class="img">
+                </el-upload>
+            </el-tooltip>
                 <div>
                 <p class="username">{{ UserStore.userData.username }}</p>
-                <p class="vip">VIP会员</p>
+                <p class="vip" v-if="UserStore.userData.allRecharge >= 500">VIP会员</p>
+                <p class="comm" v-else>普通会员</p>
                 </div>
             </div>
             <div class="account">
                 <span class="recharge" @click="addMoney">会员充值</span>
                 <p>账户余额:</p>
-                <sapn class="accountNumber"><i>¥</i>{{ UserStore.recharge }}</sapn>
+                <sapn class="accountNumber"><i>¥</i>{{ UserStore.userData.recharge }}</sapn>
             </div>
         </div>
 
-        <mydataSubject/>
-        <div>
-                <el-upload 
-                    :before-upload="beforeUpload"
-                    class="upload"
-                    >
-                    <el-button type="primary" size="small">更换头像</el-button>
-                </el-upload>
-        </div>
+        <mydataSubject class="mydata"/>
         <AddDialog ref="dialogRef"></AddDialog>
 
     </div>
@@ -47,7 +51,7 @@ const beforeUpload = (file) => {
         ElMessage.error('图片大小不能超过2MB!')
         return false
       }
-      UserStore.avaterURL = URL.createObjectURL(file);
+      UserStore.userData.avatar = URL.createObjectURL(file);
       ElMessage.success('更换头像成功!')
       return isImage;
     };
@@ -78,11 +82,14 @@ const addMoney = ()=>{
             margin: 0;
             padding: 0;
             height: 24px;
+            cursor:pointer
         }
         .img{
             width: 70px;
             height: 70px;
             border-radius: 50%;
+            transform: translateY(-22px);
+            cursor:pointer
         }
         p{
             font-weight: 700;
@@ -94,6 +101,11 @@ const addMoney = ()=>{
             margin-top: 10px;
             padding-left: 3px;
             color: #ff0000;
+        }
+        .comm{
+            font-size: 13px;
+            margin-top: 10px;
+            padding-left: 3px;
         }
     }
 
@@ -111,5 +123,9 @@ const addMoney = ()=>{
             font-size: 23px;
         }
     }
+}
+
+.mydata{
+    margin-top: 20px;
 }
 </style>

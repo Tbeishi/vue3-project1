@@ -1,13 +1,13 @@
 <template>
     <div>
         <el-dialog
-    v-model="dialogVisible"
-    title="切换地址"
-    width="40%"
-    align-center
-    center
-  >
-        <ul v-if="UserStore.addressList.length">
+        v-model="dialogVisible"
+        title="切换地址"
+        width="40%"
+        align-center
+        center
+        >
+        <ul v-if="UserStore.userData.addressList.length">
             <el-scrollbar height="400px">
             <li v-for="item in chooseList" 
             :key="item" 
@@ -25,29 +25,33 @@
         </ul>
       <el-empty v-else description="暂时没有添加收货地址" />
 
-        <template #footer>
-      <span class="dialog-footer">
+      <template #footer>
+      <span class="dialog-footer" v-if="UserStore.userData.addressList.length">
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="changeAddress">
           确认
         </el-button>
       </span>
+      <el-button type="primary" v-else @click="addAddress">添加地址</el-button>
     </template>
   </el-dialog>
-    </div>
+  </div>
+  <addressDialog ref="addDialog"/>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useUserStore } from '@/store/user'
+import  addressDialog  from './addressDialog.vue'
 const UserStore = useUserStore()
 const dialogVisible = ref(false)
 const chooseList = ref()
 const activeAddress = ref()
 const currentAddress = ref()
+const addDialog = ref()
 const openDialog = ()=>{
-    chooseList.value = UserStore.addressList
-    currentAddress.value = UserStore.addressList.find(item => item.default === true)
+    chooseList.value = UserStore.userData.addressList
+    currentAddress.value = UserStore.userData.addressList.find(item => item.default === true)
     activeAddress.value = currentAddress.value
     dialogVisible.value = true
 }
@@ -59,6 +63,11 @@ const changeAddress = ()=>{
     currentAddress.value = activeAddress.value
   }
   dialogVisible.value = false
+}
+
+const addAddress = ()=>{
+  dialogVisible.value = false
+  addDialog.value.openDialog()
 }
 
 defineExpose({

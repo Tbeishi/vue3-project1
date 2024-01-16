@@ -10,6 +10,7 @@ export const useCouponsStore = defineStore('coupons',()=>{
     const ConponsPay = ref()
     const conponsList  = ref()  
     const oldconponsList = ref()
+    const needPay = ref(0)
     return {
         couponsList, //优惠卷列表
         couponsSortList, //可使用的优惠卷列表按最大优惠降序排列，加上不可用优惠卷列表
@@ -18,6 +19,7 @@ export const useCouponsStore = defineStore('coupons',()=>{
         ConponsPay, //优惠金额
         conponsList,   //当前优惠金额列表
         oldconponsList,   //上一次优惠金额列表
+        needPay 
     }
 },{
     persist:true,

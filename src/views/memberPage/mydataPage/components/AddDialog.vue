@@ -7,7 +7,7 @@
         >
           <span>请输入充值金额：</span>
           <el-input v-model="inputValue" @input="handleInput" style="width:200px"></el-input>
-          <p class="message">充值满500元可成为VIP会员</p>
+          <p class="message">累计充值满500元可成为VIP会员</p>
           <template #footer>
             <span class="dialog-footer">
               <el-button @click="dialogVisible = false">取消</el-button>
@@ -32,7 +32,9 @@ const open = ()=>{
 
 const handle = ()=>{
   dialogVisible.value = false
-  UserStore.recharge += parseInt(inputValue.value)
+  UserStore.userData.recharge += parseInt(inputValue.value)
+  UserStore.userData.allRecharge += parseInt(inputValue.value)
+  inputValue.value = ''
 }
 
 const handleInput = (value) =>{

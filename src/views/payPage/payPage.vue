@@ -1,5 +1,6 @@
 <template>
-    <div class="container">
+    <div class="container"  
+    >
         <h3 class="header">
             <i class="iconfont icon-dingwei"></i>
             <span class="title">收货地址</span>
@@ -57,15 +58,29 @@
         <div class="payMethod">
             <h4>支付方式</h4>
             <div class="payButton">
+                <el-radio-group
+                v-model="radioGroup"
+                >
+                <div>
                 <p>平台支付</p>
-                <el-button plain size="large"><i class="iconfont icon-weixinzhifu"></i>微信支付</el-button>
-                <el-button plain size="large"><i class="iconfont icon-zhifubaozhifu"></i>支付宝支付</el-button>
+                <el-radio border size="large" label="余额支付">
+                    <img src="/src/assets/picture/头像.jpg" 
+                    style="width:30px;height: 30px;margin-right: 10px;"
+                   >
+                   余额支付
+                </el-radio>
+                <el-radio border size="large" label="微信支付"><i class="iconfont icon-weixinzhifu"></i>微信支付</el-radio>
+                <el-radio border size="large" label="支付宝支付"><i class="iconfont icon-zhifubaozhifu"></i>支付宝支付</el-radio>
+                </div>
+                <div>
                 <p>银行卡支付</p>
-                <el-button plain size="large">招商银行</el-button>
-                <el-button plain size="large">工商银行</el-button>
-                <el-button plain size="large">建设银行</el-button>
-                <el-button plain size="large">农业银行</el-button>
-                <el-button plain size="large">交通银行</el-button>
+                <el-radio border size="large" label="招商银行"></el-radio>
+                <el-radio border size="large" label="工商银行"></el-radio>
+                <el-radio border size="large" label="建设银行"></el-radio>
+                <el-radio border size="large" label="农业银行"></el-radio>
+                <el-radio border plain size="large" label="交通银行"></el-radio>
+            </div>
+            </el-radio-group>
             </div>
         </div>
 
@@ -73,11 +88,20 @@
             <h4>支付明细</h4>
             <div>
                 <p>商品件数：<span>{{ allCount }}件</span></p>
-                <p>商品总价：<span><i>¥</i>{{ allPay.toFixed(2) }}</span></p>
-                <p v-if="CouponsStore.ConponsPay">优惠：<span class="reduce">减<i>¥</i>{{ CouponsStore.ConponsPay.toFixed(2) }}</span></p>
+                <p>商品总价：<span><i>¥</i>{{ allPay }}</span></p>
+                <p v-if="CouponsStore.ConponsPay">优惠：<span class="reduce">减<i>¥</i>{{ CouponsStore.ConponsPay }}</span></p>
                 <p>合计：<span class="allPay"><i>¥</i><span class="payCount">{{ needPay.toFixed(2) }}</span></span></p>
             </div>
-            <el-button type="success" class="postBtn" size="large">提交订单</el-button>
+            <el-button type="success" class="postBtn" size="large" @click="submit">提交订单</el-button>
+            <payDialog ref="paydialog" @close="close" />
+        </div>
+
+        <div class="loading" 
+        v-if="loading"
+        v-loading="loading"
+        element-loading-text="正在提交订单中..."
+        element-loading-background="rgba(255, 255, 255, 0.6)"
+        >
         </div>
     </div>
 </template>
@@ -89,12 +113,18 @@ import { useCouponsStore } from '@/store/coupons.js'
 import { computed,onMounted,ref,watch } from 'vue'
 import  addressDialog  from '@/components/addressDialog/addressDialog.vue'
 import  chooseDialog  from '@/components/addressDialog/chooseDialog.vue'
+import { ElMessage } from 'element-plus'
+import payDialog from './components/payDialog.vue'
+
 const CartStore = useCartStore()
 const UserStore = useUserStore()
 const CouponsStore = useCouponsStore()
 const AddressDialog = ref()
 const ChooseDialog = ref()
 const address = ref({})
+const paydialog = ref()
+const radioGroup = ref('余额支付')
+const loading = ref(false)
 
 const allPay = computed(()=>{
     return CartStore.payList.reduce((pre,cur)=>pre + cur.count * cur.price,0)
@@ -112,17 +142,37 @@ const openChooseDialog = ()=>{
     ChooseDialog.value.openDialog()
 }
 
-watch(UserStore.addressList,(newVal)=>{
+watch(UserStore.userData.addressList,(newVal)=>{
     address.value = newVal.find(item=> item.default === true)
 })
 
 const needPay = computed(()=>{
-    return allPay.value - CouponsStore.ConponsPay
+    CouponsStore.needPay = allPay.value - CouponsStore.ConponsPay
+    return CouponsStore.needPay
 })
 
 onMounted(()=>{
-    address.value = UserStore.addressList.find(item=> item.default === true) || {}
+    address.value = UserStore.userData.addressList.find(item=> item.default === true) || {}
 })
+
+const submit = ()=>{
+    if(UserStore.userData.addressList.length < 1){
+        ElMessage.error('请添加您的收货地址')
+    }
+    else{
+    if(radioGroup.value === '余额支付'){
+        loading.value = true
+        paydialog.value.open()
+        setTimeout(()=>{
+            loading.value = false
+        },1000)
+    }
+    else{
+        ElMessage.error('暂未开通此功能')
+    }
+    }   
+}
+
 </script>
 
 <style scoped lang="less">
@@ -255,5 +305,32 @@ onMounted(()=>{
     justify-content: center;
     position: relative;
   }
+}
+
+.el-radio-group{
+    flex-direction: column;
+    align-items: start
+}
+
+::v-deep(.el-radio__inner) {
+display: none;
+pointer-events:none;
+}
+
+::v-deep(.el-radio__label) {
+    display: flex;
+    align-items: center;
+    justify-self: center;
+}
+
+.loading{
+    position: absolute;
+    width: 100%;
+    height: 95%;
+    background: rgba(255, 255, 255, 0); 
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    z-index: 999;
 }
 </style>

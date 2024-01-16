@@ -49,7 +49,7 @@
             @command ="commandHandle"
             >  
           <span class="dropdown__box"> 
-            <el-avatar :src="UserStore.avaterURL" :size="30"/>
+            <el-avatar :src="UserStore.userData.avatar" :size="30"/>
             <el-icon><CaretBottom /></el-icon>
           </span>
           <template #dropdown>
@@ -123,7 +123,7 @@ const beforeUpload = (file) => {
         ElMessage.error('图片大小不能超过2MB!')
         return false
       }
-      UserStore.avaterURL = URL.createObjectURL(file);
+      UserStore.userData.avatar = URL.createObjectURL(file);
       ElMessage.success('更换头像成功!')
       return isImage;
 };
@@ -135,9 +135,8 @@ const SearchMethod = ()=>{
 
 const commandHandle = (command)=>{
     if(command === 'layout'){
-        UserStore.setUserData({})
+        UserStore.clearData()
         UserStore.setToken('')
-        UserStore.addressList = []
         router.push('/login')
     }
     else{
