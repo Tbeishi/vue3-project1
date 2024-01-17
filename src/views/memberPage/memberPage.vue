@@ -13,7 +13,7 @@
             >
                 <el-menu-item index="/member/mydata">
                 <i class="iconfont icon-gerenziliao"></i>
-                <span>个人资料</span>
+                <span>会员资料</span>
                 </el-menu-item>
                 <el-menu-item index="/member/discount">
                 <i class="iconfont icon-a-youhuiquankaquanduozhangkaquan"></i>

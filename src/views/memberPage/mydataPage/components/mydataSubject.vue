@@ -2,12 +2,12 @@
      <div class="content">
             <el-descriptions
     class="margin-top"
-    title="个人信息"
+    title="会员信息"
     :column = 1
     :border="true"
   >
     <template #extra>
-      <el-button type="primary" plain round size="large" @click="openDrawer">编辑个人信息</el-button>
+      <el-button type="primary" plain round size="large" @click="openDrawer">编辑会员信息</el-button>
       <dataDrawer ref="Drawer"/>
     </template>
     <el-descriptions-item>
