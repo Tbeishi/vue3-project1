@@ -32,7 +32,7 @@
             <el-icon><iphone /></el-icon>手机号码
             </div>
         </template>
-        无 
+        {{ '' || UserStore.userData.phone }}
     </el-descriptions-item>
     <el-descriptions-item>
         <template #label>
@@ -40,7 +40,7 @@
             <el-icon><location /></el-icon>位置
             </div>
         </template>
-        无 
+        {{ '' || UserStore.userData.address }}
     </el-descriptions-item>
         <el-descriptions-item>
         <template #label>
@@ -51,7 +51,7 @@
            收货地址
             </div>
         </template>
-         无 
+         {{ '' || UserStore.userData.deliveryAddress }} 
         </el-descriptions-item>
         <el-descriptions-item>
         <template #label>
@@ -71,13 +71,17 @@
 <script setup>
 import {Iphone,Location,OfficeBuilding,User,Message} from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/user';
-import { ref } from 'vue'
+import { ref,onMounted } from 'vue'
 import dataDrawer from './dataDrawer.vue'
 const UserStore = useUserStore()
 const Drawer = ref()
 const openDrawer = ()=>{
     Drawer.value.openDrawer()
 }
+onMounted(()=>{
+    if(UserStore.userData.addressList.length>0)
+    UserStore.userData.deliveryAddress = UserStore.userData.addressList.find(item=>item.default).address
+})
 </script>
 
 <style scoped lang="less">

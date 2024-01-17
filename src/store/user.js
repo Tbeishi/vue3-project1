@@ -8,6 +8,7 @@ export const useUserStore =  defineStore('user',()=>{
         phone:'',
         address:'',
         avatar:'/src/assets/picture/default.jpg',
+        deliveryAddress:'',
         addressList:[],
         recharge:0,
         allRecharge:0,
