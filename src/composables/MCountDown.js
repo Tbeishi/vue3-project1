@@ -13,6 +13,9 @@ export const useMCountDown = ()=>{
         time.value = currentTime
         name = setInterval(()=>{
             time.value --
+            if(time.value === 0){
+                clearInterval(name)
+            }
         },1000)
     }
     //组件销毁时清除定时器

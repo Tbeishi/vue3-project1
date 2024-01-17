@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { ElMessage } from 'element-plus'
 import mydataSubject from './components/mydataSubject.vue'
 import AddDialog from "./components/AddDialog.vue";

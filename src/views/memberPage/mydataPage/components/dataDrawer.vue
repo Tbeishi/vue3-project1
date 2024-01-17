@@ -25,15 +25,21 @@
             <el-input  />
             </el-form-item>
         </el-form>
-        <el-button >取消</el-button>
-        <el-button >确认</el-button>
+        <div class="footer">
+        <el-button plain>取消</el-button>
+        <el-button plain type="primary">确认</el-button>
+        </div>
      </div>
     </el-drawer>
 </template>
 
 <script setup>
 import { ref } from "vue";
-
+import { useUserStore } from '@/store/user';
+const UserStore = useUserStore()
+const data = ref(
+    
+)
 const visible = ref(false)
 const openDrawer = ()=>{
     visible.value = true
@@ -44,5 +50,11 @@ defineExpose({
 </script>
 
 <style lang="less" scoped>
-  
+.footer{
+    margin-top: 40px;
+    text-align: center;
+    .el-button{
+        margin-right: 10px;
+    }
+}
 </style>

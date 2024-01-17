@@ -127,7 +127,8 @@ const radioGroup = ref('余额支付')
 const loading = ref(false)
 
 const allPay = computed(()=>{
-    return CartStore.payList.reduce((pre,cur)=>pre + cur.count * cur.price,0)
+    CouponsStore.allPay = CartStore.payList.reduce((pre,cur)=>pre + cur.count * cur.price,0)
+    return CouponsStore.allPay
 })
 
 const allCount = computed(()=>{

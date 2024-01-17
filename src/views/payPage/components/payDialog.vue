@@ -6,12 +6,10 @@
             width="30%"
             center
             :open-delay="1000"
-            :close-delay="3500"
             :close-on-click-modal="false"
-            @close="Cancel"
         >
         <div v-if="showPay">
-            <h3 class="payPrice"><i>¥</i>{{ CouponsStore.needPay }}</h3>
+            <h3 class="payPrice"><i>¥</i>{{ needPay }}</h3>
             <p>
                 <span>用户:</span>
                 <span>{{ UserStore.userData.username }}</span>
@@ -29,7 +27,7 @@
                         >
                         <div class="left-content">
                         <span class="method">余额支付</span>
-                         <span class="hasMoney">可用: ¥{{ UserStore.userData.recharge }}</span>
+                         <span class="hasMoney">可用: ¥{{ UserStore.userData.recharge.toFixed(2) }}</span>
                         </div>
                     </div>
                     <div class="right">
@@ -40,8 +38,8 @@
         </div>
             <template #footer v-if="showPay">
             <span class="dialog-footer">
-                <el-button @click="Cancel">取消支付</el-button>
-                <el-button type="primary" @click="close">
+                <el-button @click="Cancel(1)">取消支付</el-button>
+                <el-button type="primary" @click="close(2)">
                 确认支付
                 </el-button>
             </span>
@@ -77,8 +75,17 @@ const showError = ref(false)
 const showPay = ref(true)
 const CartStore = useCartStore()
 const router = useRouter()
-const open = ()=>{
+const index = ref(0)
+const flag = ref(0)
+const needPay = ref()
+const open = (value=0,value2=0)=>{
     dialogVisible.value = true
+    index.value = value
+    flag.value = value2
+    if(flag.value === 0) needPay.value = CouponsStore.needPay
+    else{
+        needPay.value = OrderStore.order[index.value].needPay
+    }
 }
 
 const getOrderMessage = (message,time)=>{
@@ -92,7 +99,8 @@ const getOrderMessage = (message,time)=>{
         orderFoods: CartStore.payList.map(item => ({ ...item })),
         needPay:CouponsStore.needPay,
         ConponsPay:CouponsStore.ConponsPay,
-        cancelTime:time
+        cancelTime:time,
+        Conpons:CouponsStore.curConpons
     })
 }
 
@@ -104,38 +112,106 @@ CartStore.payList.forEach((item,index)=>{
     CartStore.cartNameList.splice(delId,1)
     CartStore.Cartdata.splice(delId,1)
 })
-
+if(flag.value === 0) finishCoupons()
 }
 
-const close = ()=>{
+//生成订单删除优惠卷
+const finishCoupons = ()=>{
+if(CouponsStore.couponsList.length > 0 && CouponsStore.curConpons){
+const CouponId = CouponsStore.curConpons.id
+CouponsStore.ConponsPay = 0
+CouponsStore.curConpons = null
+let delCouponId
+let usefulId
+let SortListId
+CouponsStore.couponsList.forEach((item,index)=>{
+    if(item.id === CouponId){
+        delCouponId = index
+    }
+})
+CouponsStore.usefulCouponList.forEach((item,index)=>{
+    if(item.id === CouponId){
+        usefulId = index
+    }
+})
+CouponsStore.couponsSortList.forEach((item,index)=>{
+    if(item.id === CouponId){
+        SortListId = index
+    }
+})
+if(CouponsStore.couponsList[delCouponId].CouponType === 1){
+    if(CouponsStore.couponsList[delCouponId].CouponPrice <= CouponsStore.allPay){
+        CouponsStore.couponsList.splice(delCouponId,1)
+    }
+    else{
+        CouponsStore.couponsList[delCouponId].CouponPrice -= CouponsStore.allPay
+    }
+}
+else{
+CouponsStore.couponsList.splice(delCouponId,1)
+CouponsStore.usefulCouponList.splice(usefulId,1)
+CouponsStore.couponsSortList.splice(SortListId,1)
+}
+}
+}
+
+const close = (value)=>{
     loading.value = true
+    console.log(CouponsStore.needPay);
+    if(CouponsStore.needPay > UserStore.userData.recharge) Cancel(value)
+    else{
     setTimeout(()=>{
         loading.value = false
         showPay.value = false
         showSuccess.value = true
-        getOrderMessage('已支付')
-        finishCart()
+        if(flag.value === 0) getOrderMessage('已支付')
+        else{
+             if(flag.value === 1){
+                OrderStore.allOrder[index.value].orderStatus = '已支付'
+             }
+             else{
+                OrderStore.waitOrder[index.value].orderStatus = '已支付'
+             }
+        }
+        UserStore.userData.recharge -= CouponsStore.needPay
         setTimeout(()=>{
             dialogVisible.value = false
-            UserStore.userData.recharge -= CouponsStore.needPay
+            finishCart()
             router.push('/order')
+            setTimeout(()=>{
+                showPay.value = true
+                showSuccess.value = false
+            },500)
         },3000)
     },700)
 }
+}
 
-const Cancel = ()=>{
+const Cancel = (value)=>{
+    if(flag.value === 0 || value === 2){
     loading.value = true
     setTimeout(()=>{
         loading.value = false
         showPay.value = false
         showError.value = true
-        getOrderMessage('待支付',1800)
+        if(flag.value === 0) getOrderMessage('待支付',1800)
+        // if(CouponsStore.needPay < UserStore.userData.recharge){
+        // UserStore.userData.recharge -= CouponsStore.needPay
+        // }
         setTimeout(()=>{
-            dialogVisible.value = false
-            UserStore.userData.recharge -= CouponsStore.needPay
-            router.push('/order')
+        dialogVisible.value = false
+        finishCoupons()
+        router.push('/order')
+        setTimeout(()=>{
+                showPay.value = true
+                showError.value = false
+            },500)
         },3000)
     },500)
+    }
+    else{
+        dialogVisible.value = false
+    }
 }
 
 defineExpose({

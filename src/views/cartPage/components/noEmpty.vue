@@ -250,6 +250,8 @@ const coupons = computed(()=>{
     if(reviseIndex.value === -1) { 
       reviseIndex.value = 0 
       IsvalueArr[0].isChecked
+      CouponsStore.curConpons = null
+      CouponsStore.ConponsPay = 0
       return 0
     }
     else {
@@ -271,6 +273,8 @@ const coupons = computed(()=>{
     CouponsStore.ConponsPay = res
     return res
   }
+  CouponsStore.curConpons = null
+  CouponsStore.ConponsPay = 0
   return 0
 })
 

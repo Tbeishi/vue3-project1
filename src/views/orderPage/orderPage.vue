@@ -29,7 +29,7 @@
                             <span class="ConponsPay"><span class="sub">优惠:</span><i>¥</i>{{ OrderStore.order[index].ConponsPay }}</span>
                             <span class="needPay"><span class="sub">需付款:</span><i>¥</i>{{ OrderStore.order[index].needPay }}</span>
                             <el-button plain class="cancel" @click="openDialog(index,1)">取消订单</el-button>
-                            <el-button color="#ff9569" plain bg>继续付款</el-button>
+                            <el-button color="#ff9569" plain bg @click="continuePay(item,index,1)">继续付款</el-button>
                             </div>
                         </template>
                         <template #footer v-else-if="item.orderStatus==='已完成'">
@@ -72,7 +72,7 @@
                             <span class="ConponsPay"><span class="sub">优惠:</span><i>¥</i>{{ OrderStore.order[index].ConponsPay }}</span>
                             <span class="needPay"><span class="sub">需付款:</span><i>¥</i>{{ OrderStore.order[index].needPay }}</span>
                             <el-button plain class="cancel" @click="openDialog(index,2)">取消订单</el-button>
-                            <el-button color="#ff9569" plain bg>继续付款</el-button>
+                            <el-button color="#ff9569" plain bg @click="continuePay(item,index,2)">继续付款</el-button>
                             </div>
                         </template>
                     </orderCard>
@@ -135,6 +135,15 @@
         <cancleDialog ref="SubmitDialog" title='确认收货'>
             <template #message>已收到货，确定收货吗？</template>
         </cancleDialog>
+        <PayDialog ref="DigPay"/>
+
+        <div class="loading" 
+        v-if="openloading"
+        v-loading="openloading"
+        element-loading-text="继续付款..."
+        element-loading-background="rgba(255, 255, 255, 0.6)"
+        >
+        </div>
         </div>
 </template>
 
@@ -144,14 +153,19 @@ import { useOrderStore } from '@/store/order'
 import { onMounted,ref,watch } from 'vue'
 import cancleDialog from '@/components/cancleDialog/cancleDialog.vue'
 import { ElMessage } from 'element-plus'
+import { useMCountDown } from '@/composables/MCountDown'
+import PayDialog from '../payPage/components/payDialog.vue'
+import { useCouponsStore } from '@/store/coupons.js'
+const CouponsStore = useCouponsStore()
+const { MSTime,start } = useMCountDown()
 const tabName = ref('allOrder')
 const Dialog = ref()
 const SubmitDialog = ref()
-import { useMCountDown } from '@/composables/MCountDown'
-const { MSTime,start } = useMCountDown()
+const openloading = ref(false)
 const openElMessage = () => {
   ElMessage.success('正在催促发货中...')
 }
+const DigPay = ref()
 const openDialog = (index,flag)=>{
     Dialog.value.open(index,flag)
 }
@@ -177,6 +191,16 @@ watch(OrderStore.order,(newVal)=>{
     OrderStore.received = newVal.filter( item => item.orderStatus === '已支付')
     OrderStore.FinishOrder = newVal.filter( item => item.orderStatus === '已完成')
 })
+
+const continuePay = (item,index,flag)=>{
+    CouponsStore.needPay = item.needPay
+    DigPay.value.open(index,flag)
+    console.log();
+    openloading.value = true
+        setTimeout(()=>{
+            openloading.value = false
+        },1000)
+}
 </script>
 
 
@@ -278,5 +302,16 @@ i{
     position: absolute;
     right: 7px;
     top: 0px;
+}
+
+.loading{
+    position: absolute;
+    width: 100%;
+    height: 95%;
+    background: rgba(255, 255, 255, 0); 
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    z-index: 999;
 }
 </style>

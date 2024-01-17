@@ -7,7 +7,7 @@
     :border="true"
   >
     <template #extra>
-      <el-button type="primary" @click="openDrawer">编辑个人信息</el-button>
+      <el-button type="primary" plain round size="large" @click="openDrawer">编辑个人信息</el-button>
       <dataDrawer ref="Drawer"/>
     </template>
     <el-descriptions-item>

@@ -1,5 +1,5 @@
 import { createWebHistory,createRouter } from 'vue-router'
-const authUrls = ['/member/mydata','/pay','/mycart','/member/discount','/member/order']
+const authUrls = ['/member/mydata','/pay','/order','/mycart','/member/discount','/member/order']
 import { useUserStore } from '@/store/user';
 
 const router = createRouter({
