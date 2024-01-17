@@ -23,7 +23,7 @@
             <div class="account">
                 <span class="recharge" @click="addMoney">会员充值</span>
                 <p>账户余额:</p>
-                <sapn class="accountNumber"><i>¥</i>{{ UserStore.userData.recharge }}</sapn>
+                <sapn class="accountNumber"><i>¥</i>{{ UserStore.userData.recharge.toFixed(2) }}</sapn>
             </div>
         </div>
 

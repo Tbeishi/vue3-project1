@@ -49,9 +49,9 @@ const router = createRouter({
                             component:()=>import ('@/views/memberPage/discountPage/discountPage.vue'),
                         },
                         {
-                            path:'/member/order',
-                            name:'order',
-                            component:()=>import ('@/views/memberPage/orderPage/orderPage.vue'),
+                            path:'/member/manage',
+                            name:'manage',
+                            component:()=>import ('@/views/memberPage/ManagePage/ManagePage.vue'),
                         },
                     ]
                 },

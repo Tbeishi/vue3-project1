@@ -6,7 +6,9 @@
             width="30%"
             center
             :open-delay="1000"
+            :close-delay="3500"
             :close-on-click-modal="false"
+            @close="Cancel"
         >
         <div v-if="showPay">
             <h3 class="payPrice"><i>¥</i>{{ CouponsStore.needPay }}</h3>
@@ -38,7 +40,7 @@
         </div>
             <template #footer v-if="showPay">
             <span class="dialog-footer">
-                <el-button @click="dialogVisible = false">取消支付</el-button>
+                <el-button @click="Cancel">取消支付</el-button>
                 <el-button type="primary" @click="close">
                 确认支付
                 </el-button>
@@ -57,12 +59,15 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useUserStore } from '@/store/user';
+import { ref } from "vue"
+import { useUserStore } from '@/store/user'
+import { useOrderStore } from '@/store/order'
+import { useCartStore } from '@/store/cart'
 import { useCouponsStore } from '@/store/coupons.js'
 import PaySuccess from './PaySuccess.vue'
 import PayError from './PayError.vue'
 import { useRouter } from "vue-router";
+const OrderStore = useOrderStore()
 const UserStore = useUserStore()
 const CouponsStore = useCouponsStore()
 const dialogVisible = ref(false)
@@ -70,9 +75,36 @@ const loading = ref(false)
 const showSuccess = ref(false)
 const showError = ref(false)
 const showPay = ref(true)
+const CartStore = useCartStore()
 const router = useRouter()
 const open = ()=>{
     dialogVisible.value = true
+}
+
+const getOrderMessage = (message,time)=>{
+    let newDate = new Date();
+    let orderId = UserStore.userData.UID + 'MY' + Date.parse(newDate)
+    let orderTime = newDate.toLocaleString()
+    OrderStore.order.unshift({
+        orderTime:orderTime,
+        orderId:orderId,
+        orderStatus:message,
+        orderFoods: CartStore.payList.map(item => ({ ...item })),
+        needPay:CouponsStore.needPay,
+        ConponsPay:CouponsStore.ConponsPay,
+        cancelTime:time
+    })
+}
+
+const finishCart = ()=>{
+//结算成功，删除对应购物车的商品信息以及优惠卷信息
+CartStore.payList.forEach((item,index)=>{
+    const id = item.kindsId || item.categoryId
+    const delId = CartStore.cartNameList.indexOf(id)
+    CartStore.cartNameList.splice(delId,1)
+    CartStore.Cartdata.splice(delId,1)
+})
+
 }
 
 const close = ()=>{
@@ -81,15 +113,29 @@ const close = ()=>{
         loading.value = false
         showPay.value = false
         showSuccess.value = true
+        getOrderMessage('已支付')
+        finishCart()
         setTimeout(()=>{
-            showPay.value = true
-            showSuccess.value = false
             dialogVisible.value = false
+            UserStore.userData.recharge -= CouponsStore.needPay
             router.push('/order')
         },3000)
     },700)
-    
-    UserStore.userData.recharge -= CouponsStore.needPay
+}
+
+const Cancel = ()=>{
+    loading.value = true
+    setTimeout(()=>{
+        loading.value = false
+        showPay.value = false
+        showError.value = true
+        getOrderMessage('待支付',1800)
+        setTimeout(()=>{
+            dialogVisible.value = false
+            UserStore.userData.recharge -= CouponsStore.needPay
+            router.push('/order')
+        },3000)
+    },500)
 }
 
 defineExpose({

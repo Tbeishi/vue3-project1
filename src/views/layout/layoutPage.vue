@@ -38,7 +38,7 @@
                     <span>购物车</span>
                 </div>
             </div>
-            <div>
+            <div class="myOrder" @click="$router.push('/order')">
                 我的订单
             </div>
             <div class="toLogin" v-if="!UserStore.userData.username" @click="$router.push('/login')">
@@ -229,6 +229,10 @@ const commandHandle = (command)=>{
     color: #2E95FB !important;
     background: #ffffff;
     // height: 30px;
+}
+
+.myOrder{
+    cursor: pointer;
 }
 .el-main{
     width: 90vw;

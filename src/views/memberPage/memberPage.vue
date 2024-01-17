@@ -19,7 +19,7 @@
                 <i class="iconfont icon-a-youhuiquankaquanduozhangkaquan"></i>
                 <span>卡券礼包</span>
                 </el-menu-item>
-                <el-menu-item index="/member/order">
+                <el-menu-item index="/member/manage">
                 <i class="iconfont icon-jiaoyijilu"></i>
                 <span>交易中心</span>
                 </el-menu-item>

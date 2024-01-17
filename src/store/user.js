@@ -31,6 +31,7 @@ export const useUserStore =  defineStore('user',()=>{
             avatar:'/src/assets/picture/default.jpg',
             addressList:[],
             recharge:0,
+            allRecharge:0,
         }
     }
     return {

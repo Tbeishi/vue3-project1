@@ -57,7 +57,7 @@
   </el-table-column>
     <el-table-column label="合计">
     <template #default="{row}">
-        <span class="cost"><i>¥</i>{{ (row.price*row.count).toFixed(2) }}</span>
+        <span class="cost"><i>¥</i>{{ row.price*row.count }}</span>
     </template>
   </el-table-column>
   <el-table-column width="117px">
