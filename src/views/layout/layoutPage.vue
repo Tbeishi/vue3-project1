@@ -84,7 +84,7 @@ import { useRouter,useRoute } from 'vue-router'
 import { useCartStore } from '@/store/cart'
 import { useUserStore } from '@/store/user';
 import { ElMessage } from 'element-plus'
-
+import { ElMessageBox } from 'element-plus'
 const router = useRouter()
 import { useScroll } from '@vueuse/core'
 const scroll = ref(null)
@@ -133,14 +133,37 @@ const SearchMethod = ()=>{
     router.push({path:`/search/${SearchValue.value}`})
 }
 
-const commandHandle = (command)=>{
+const commandHandle = async (command)=>{
     if(command === 'layout'){
+    await ElMessageBox.confirm(
+    '你确定要退出吗?',
+    '温馨提示',
+    {
+      confirmButtonText: '是',
+      cancelButtonText: '否',
+      type: 'warning',
+    })
         UserStore.clearData()
         UserStore.setToken('')
         router.push('/login')
     }
     else{
         router.push(command)
+    }
+}
+
+const handlecommand = async (key)=>{
+    if(key === 'layout'){
+   
+    UserStore.count = 0
+    UserStore.user = ''
+    router.replace({path:'/login'})
+    }
+    else if(key == 'login'){
+    router.replace({path:'/login'})
+    }
+    else{
+    router.replace({path:`/my/${key}`})
     }
 }
 </script>

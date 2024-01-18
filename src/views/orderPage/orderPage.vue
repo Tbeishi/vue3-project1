@@ -156,6 +156,8 @@ import { ElMessage } from 'element-plus'
 import { useMCountDown } from '@/composables/MCountDown'
 import PayDialog from '../payPage/components/payDialog.vue'
 import { useCouponsStore } from '@/store/coupons.js'
+import { useRoute } from 'vue-router'
+const route = useRoute()
 const CouponsStore = useCouponsStore()
 const { MSTime,start } = useMCountDown()
 const tabName = ref('allOrder')
@@ -183,6 +185,7 @@ onMounted(()=>{
     OrderStore.waitOrder.forEach((item)=>{
         start(item.cancelTime)
     })
+    tabName.value = route.query.message
 })
 
 watch(OrderStore.order,(newVal)=>{
@@ -201,6 +204,10 @@ const continuePay = (item,index,flag)=>{
             openloading.value = false
         },1000)
 }
+
+watch(() => route.query.message, (newval) => {
+    tabName.value = newval
+})
 </script>
 
 

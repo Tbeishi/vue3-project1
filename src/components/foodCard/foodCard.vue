@@ -1,7 +1,7 @@
 <template>
       <el-card @click="toDetail(food)" >
             <div class="card-pic">
-            <img :src="food.image" alt="" style="width:55%;height: 140px">
+            <img v-img-lazy="food.image" style="width:55%;height: 140px">
             </div>
             <div class="card-container">
             <div class="sellName">{{ food.categoryName }}</div>

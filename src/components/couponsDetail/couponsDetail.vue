@@ -11,7 +11,7 @@
     </template>
     <template #default>
       <div>
-        <el-scrollbar height="100%">
+        <el-scrollbar height="100%" v-if="CouponsStore.couponsList.length > 0">
         <ul>
             <li v-for="(item,index) in CouponsStore.couponsSortList" :key="item" :class="{'active':!item.Isvalue}">
                 <div class="left">
@@ -46,6 +46,7 @@
             </li>
         </ul>
     </el-scrollbar>
+    <el-empty v-else description="您暂时没有优惠卷哦~" />
       </div>
     </template>
     <template #footer>

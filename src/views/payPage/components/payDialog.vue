@@ -1,6 +1,7 @@
 <template>
     <div>
         <el-dialog
+            class="dig"
             v-model="dialogVisible"
             title="提交订单"
             width="30%"
@@ -38,14 +39,15 @@
         </div>
             <template #footer v-if="showPay">
             <span class="dialog-footer">
-                <el-button @click="Cancel(1)">取消支付</el-button>
+                <el-button @click="innerVisible = true">取消支付</el-button>
                 <el-button type="primary" @click="close(2)">
                 确认支付
                 </el-button>
             </span>
             </template>
-            <div class="loading"
+            <div 
             v-if="loading"
+            class="loading"
             v-loading="loading"
             element-loading-text="正在结算中..."
             element-loading-background="rgba(255, 255, 255, 0.7)"
@@ -53,6 +55,27 @@
             <PaySuccess v-if="showSuccess"/>
             <PayError v-if="showError"/>
         </el-dialog>
+
+      
+        <el-dialog
+                v-model="innerVisible"
+                width="20%"
+                title="取消支付"
+                style="height: 200px;"
+                center
+                align-center
+                :close-on-click-modal="false"
+                >
+                <div>
+                    您确定要取消支付吗？
+                </div>
+                <template #footer>
+                    <el-button @click="innerVisible = false">再想想</el-button>
+                    <el-button type="primary" @click="Cancel(1)">
+                    确定
+                    </el-button>
+                </template>
+            </el-dialog>
     </div>
 </template>
 
@@ -78,6 +101,7 @@ const router = useRouter()
 const index = ref(0)
 const flag = ref(0)
 const needPay = ref()
+const innerVisible = ref(false)
 const open = (value=0,value2=0)=>{
     dialogVisible.value = true
     index.value = value
@@ -157,7 +181,6 @@ CouponsStore.couponsSortList.splice(SortListId,1)
 
 const close = (value)=>{
     loading.value = true
-    console.log(CouponsStore.needPay);
     if(CouponsStore.needPay > UserStore.userData.recharge) Cancel(value)
     else{
     setTimeout(()=>{
@@ -177,7 +200,7 @@ const close = (value)=>{
         setTimeout(()=>{
             dialogVisible.value = false
             finishCart()
-            router.push('/order')
+            router.push({path:'/order',query:{message:'received'}})
             setTimeout(()=>{
                 showPay.value = true
                 showSuccess.value = false
@@ -188,6 +211,7 @@ const close = (value)=>{
 }
 
 const Cancel = (value)=>{
+    innerVisible.value = false
     if(flag.value === 0 || value === 2){
     loading.value = true
     setTimeout(()=>{
@@ -201,13 +225,13 @@ const Cancel = (value)=>{
         setTimeout(()=>{
         dialogVisible.value = false
         finishCoupons()
-        router.push('/order')
+        router.push({path:'/order',query:{message:'waitOrder'}})
         setTimeout(()=>{
                 showPay.value = true
                 showError.value = false
             },500)
         },3000)
-    },500)
+    },700)
     }
     else{
         dialogVisible.value = false
@@ -278,22 +302,22 @@ p{
     height: 35px;
     margin-right: 10px;
 }
-::v-deep(.el-dialog__body){
+::v-deep(.dig.el-dialog__body){
     padding: 0 30px;
     min-height: 200px;
     position: relative;
 }
-::v-deep(.el-dialog__footer){
+::v-deep(.dig.el-dialog__footer){
     padding: 20px 0;
 }
 
 .loading{
     position: absolute;
     background: rgba(255, 255, 255, 0); 
-    top: -50px;
+    top: 0px;
     left: 0;
     width: 100%;
-    height: 150%;
+    height: 100%;
     z-index: 999;
 }
 </style>

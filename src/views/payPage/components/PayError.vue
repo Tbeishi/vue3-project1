@@ -17,6 +17,6 @@ const { STime,start } = useCountDown()
 start(3)
 const router = useRouter()
 const handle = ()=>{
-    router.push('/order')
+    router.push({path:'/order',query:{message:'waitOrder'}})
 }
 </script>

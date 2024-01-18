@@ -78,6 +78,7 @@ const handle = ()=>{
             const id = OrderStore.waitOrder[index.value].orderId
             const order = OrderStore.order.find(item=> item.orderId === id)
             const delId = OrderStore.order.indexOf(order)
+            OrderStore.waitOrder.splice(index.value,1)
             OrderStore.order.splice(delId,1)
         }
     innerVisible.value = false

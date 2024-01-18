@@ -2,7 +2,7 @@
     <div class="discountPage">
         <el-tabs class="demo-tabs" stretch v-model="activeName">
             <el-tab-pane label="红包" name="first">
-                <el-scrollbar height="74vh">
+                <el-scrollbar height="74vh" v-if="CouponsStore.couponsList.length > 0">
                 <ul v-for="item in CouponsStore.couponsList" :key="item.id">
                     <li>
                         <div class="card-content">
@@ -34,6 +34,7 @@
                     </li>
                 </ul>
             </el-scrollbar>
+            <el-empty v-else description="您暂时没有红包哦~" />
             </el-tab-pane>
             <el-tab-pane label="券" name="second">
                 <el-empty description="您暂时没有券哦~" />
