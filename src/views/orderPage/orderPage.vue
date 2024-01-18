@@ -69,8 +69,8 @@
                         <template #footer>
                             <div class="time">{{ MSTime }}<sapn class="timeMessage">后将自动取消订单</sapn></div>
                             <div>
-                            <span class="ConponsPay"><span class="sub">优惠:</span><i>¥</i>{{ OrderStore.order[index].ConponsPay }}</span>
-                            <span class="needPay"><span class="sub">需付款:</span><i>¥</i>{{ OrderStore.order[index].needPay }}</span>
+                            <span class="ConponsPay"><span class="sub">优惠:</span><i>¥</i>{{ OrderStore.waitOrder[index].ConponsPay }}</span>
+                            <span class="needPay"><span class="sub">需付款:</span><i>¥</i>{{ OrderStore.waitOrder[index].needPay }}</span>
                             <el-button plain class="cancel" @click="openDialog(index,2)">取消订单</el-button>
                             <el-button color="#ff9569" plain bg @click="continuePay(item,index,2)">继续付款</el-button>
                             </div>
@@ -93,8 +93,8 @@
                         <template #footer>
                             <div></div>
                             <div>
-                            <span class="ConponsPay"><span class="sub">优惠:</span><i>¥</i>{{ OrderStore.order[index].ConponsPay }}</span>
-                            <span class="needPay"><span class="sub">实付款:</span><i>¥</i>{{ OrderStore.order[index].needPay }}</span>
+                            <span class="ConponsPay"><span class="sub">优惠:</span><i>¥</i>{{ OrderStore.received[index].ConponsPay }}</span>
+                            <span class="needPay"><span class="sub">实付款:</span><i>¥</i>{{ OrderStore.received[index].needPay }}</span>
                             <el-button plain class="cancel" @click="openElMessage">催发货</el-button>
                             <el-button color="#ff9569" plain bg @click="openSubmitDialog(index,3)">确认收货</el-button>
                             </div>
@@ -176,11 +176,13 @@ const openSubmitDialog = (index,flag)=>{
 }
 const OrderStore = useOrderStore()
 onMounted(()=>{
+    console.log(OrderStore.waitOrder);
     const data = OrderStore.order
     OrderStore.allOrder = data
     OrderStore.waitOrder = data.filter( item => item.orderStatus === '待支付')
     OrderStore.received = data.filter( item => item.orderStatus === '已支付')
     OrderStore.FinishOrder = data.filter( item => item.orderStatus === '已完成')
+    console.log(OrderStore.waitOrder);
     if(OrderStore.waitOrder.length > 0) 
     OrderStore.waitOrder.forEach((item)=>{
         start(item.cancelTime)

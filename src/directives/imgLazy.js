@@ -9,7 +9,6 @@ export default (app)=>{
         const {  stop } = useIntersectionObserver(
             el,
             ([{ isIntersecting }]) =>{
-                console.log(isIntersecting);
                 if(isIntersecting){
                     el.src = binding.value
                     stop()

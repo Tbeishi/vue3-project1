@@ -54,7 +54,7 @@ const handle = ()=>{
           if(Conpon){
             if(Conpon.CouponType===1){
             const res = CouponsStore.couponsList.find(item => item.id === Conpon.id)
-            res === undefined ?  CouponsStore.couponsList.unshift(Conpon) : res.CouponPrice += Conpon.CouponPrice
+            res === undefined ?  CouponsStore.couponsList.unshift(Conpon) : res.CouponPrice += OrderStore.order[index.value].ConponsPay
             }
             else{
               CouponsStore.couponsList.unshift(Conpon)
@@ -68,7 +68,9 @@ const handle = ()=>{
             if(Conpon){
               if(Conpon.CouponType===1){
               const res = CouponsStore.couponsList.find(item => item.id === Conpon.id)
-              res === undefined ?  CouponsStore.couponsList.unshift(Conpon) : res.CouponPrice += Conpon.CouponPrice
+              console.log(res);
+              res === undefined ?  CouponsStore.couponsList.unshift(Conpon) : res.CouponPrice += OrderStore.waitOrder[index.value].ConponsPay
+              console.log(Conpon.CouponPrice);
               }
               else{
               CouponsStore.couponsList.unshift(Conpon)
